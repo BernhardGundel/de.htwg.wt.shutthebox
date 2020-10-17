@@ -1,17 +1,18 @@
-name := """shutthebox"""
-organization := "de.htwg.wttech"
 
-version := "1.0-SNAPSHOT"
+name := """Shut The Box"""
+
+version := "1.0"
 
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
-scalaVersion := "2.12.4"
+resolvers += Resolver.sonatypeRepo("snapshots")
+
+scalaVersion := "2.12.7"
 
 libraryDependencies += guice
+
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
+
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
 
-// Adds additional packages into Twirl
-//TwirlKeys.templateImports += "de.htwg.wttech.controllers._"
-
-// Adds additional packages into conf/routes
-// play.sbt.routes.RoutesKeys.routesImport += "de.htwg.wttech.binders._"
+libraryDependencies += "com.h2database" % "h2" % "1.4.196"
