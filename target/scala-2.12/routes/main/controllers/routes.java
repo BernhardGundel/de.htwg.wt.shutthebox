@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/Users/bernhardgundel/Documents/Studium/Semester_6/WebTechnologien/Workspace/de.htwg.wt.shutthebox/conf/routes
-// @DATE:Sat Oct 17 19:24:17 CEST 2020
+// @SOURCE:/Users/pfau/02_Sonstiges/06_Github_Repos/17_HTWG_6_5_WebTec/de.htwg.wt.shutthebox/conf/routes
+// @DATE:Thu Oct 22 13:21:29 CEST 2020
 
 package controllers;
 

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="de.htwg.se.shutthebox">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/de.htwg.se.shutthebox.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

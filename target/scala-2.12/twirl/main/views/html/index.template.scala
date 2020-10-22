@@ -45,8 +45,8 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: Sat Oct 17 19:22:32 CEST 2020
-                  SOURCE: /Users/bernhardgundel/Documents/Studium/Semester_6/WebTechnologien/Workspace/de.htwg.wt.shutthebox/app/views/index.scala.html
+                  DATE: Thu Oct 22 13:21:29 CEST 2020
+                  SOURCE: /Users/pfau/02_Sonstiges/06_Github_Repos/17_HTWG_6_5_WebTec/de.htwg.wt.shutthebox/app/views/index.scala.html
                   HASH: b50a874fd3e382f063760a06bc416feb9bb955f1
                   MATRIX: 722->1|818->4|845->6|872->25|911->27|943->33|996->57
                   LINES: 21->1|26->2|27->3|27->3|27->3|29->5|31->7

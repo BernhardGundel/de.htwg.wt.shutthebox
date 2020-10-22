@@ -4,7 +4,7 @@
 		module="shut-the-box$sources"
 		revision="1.0"
 		status="integration"
-		publication="20201017192601"
+		publication="20201022124241"
 	/>
 	<configurations>
 		<conf name="compile" visibility="public" description=""/>
