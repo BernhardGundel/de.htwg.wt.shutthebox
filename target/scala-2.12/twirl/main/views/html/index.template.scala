@@ -24,7 +24,7 @@ object index extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.Html
 
 
 Seq[Any](format.raw/*2.1*/("""
-"""),_display_(/*3.2*/main("HTWG Sudoku")/*3.21*/ {_display_(Seq[Any](format.raw/*3.23*/("""
+"""),_display_(/*3.2*/main("HTWG Shut The Box")/*3.27*/ {_display_(Seq[Any](format.raw/*3.29*/("""
 
     """),format.raw/*5.5*/("""<h1>About Sudoku</h1>
 
@@ -45,10 +45,10 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: Thu Oct 22 13:21:29 CEST 2020
-                  SOURCE: /Users/pfau/02_Sonstiges/06_Github_Repos/17_HTWG_6_5_WebTec/de.htwg.wt.shutthebox/app/views/index.scala.html
-                  HASH: b50a874fd3e382f063760a06bc416feb9bb955f1
-                  MATRIX: 722->1|818->4|845->6|872->25|911->27|943->33|996->57
+                  DATE: Thu Oct 22 13:53:01 CEST 2020
+                  SOURCE: /Users/bernhardgundel/Documents/Studium/Semester_6/WebTechnologien/Workspace/de.htwg.wt.shutthebox/app/views/index.scala.html
+                  HASH: bc369daf4fa9214fb1f68842dcf3f06982e00d62
+                  MATRIX: 722->1|818->4|845->6|878->31|917->33|949->39|1002->63
                   LINES: 21->1|26->2|27->3|27->3|27->3|29->5|31->7
                   -- GENERATED --
               */

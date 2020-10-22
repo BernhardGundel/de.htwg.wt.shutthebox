@@ -4,9 +4,11 @@
 
 # Controller for Sudoku
 
-GET     /                           controllers.ShutTheBoxController.shutthebox
+GET     /                          controllers.ShutTheBoxController.shutthebox
 
-# GET     /about                      controllers.SudokuController.about
+GET     /help                      controllers.ShutTheBoxController.help
+
+GET     /ingame                      controllers.ShutTheBoxController.ingame
 
 
 # Map static resources from the /public folder to the /assets URL path
