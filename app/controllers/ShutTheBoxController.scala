@@ -2,33 +2,26 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
+import de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface
 
 
 @Singleton
 class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
-  val gameController = ShutTheBox.controller
-  val tui = ShutTheBox.tui
-  def shutTheBoxAsText = gameController.printOutput
-  def headerAsText = tui.printHeader()
-  def helpAsText = tui.printRules()
+  val gameController: ControllerInterface = ShutTheBox.controller
 
-  def shutthebox = Action {
-    Ok(headerAsText)
+  def shutthebox: Action[AnyContent] = Action {
+    Ok(views.html.mainmenu())
   }
 
-  def help = Action {
-    Ok(helpAsText)
+  def help: Action[AnyContent] = Action {
+    Ok(views.html.index())
   }
 
-  def ingame = Action {
-    gameController.startGame(1, false)
-    val startGameAsText = gameController.printOutput
+  def ingame: Action[AnyContent] = Action {
+    gameController.startGame(1, ai=false)
     gameController.rollDice
-    val diceAsText = gameController.printOutput
 
-    val ingame = startGameAsText + diceAsText
-
-    Ok(ingame)
+    Ok(views.html.ingame(gameController))
   }
 
 }
