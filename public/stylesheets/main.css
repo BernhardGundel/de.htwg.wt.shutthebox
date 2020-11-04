@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=McLaren&display=swap');
+
+html *
+{
+   font-family: 'McLaren' sans-serif;
+}
+
+.font-mclaren {
+    font-family: 'McLaren' sans-serif;
+}
+
+.mainmenu-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-content: center;
+}
+
+.mainmenu-center-elem {
+
+}
+
+.header {
+    font-family: 'McLaren' sans-serif;
+}

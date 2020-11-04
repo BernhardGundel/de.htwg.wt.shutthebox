@@ -1,8 +1,9 @@
 @()
 
 @main("HTWG Shut The Box") {
-    <h1>SHUT THE BOX</h1>
-    <button>
+<div class="mainmenu-container">
+    <h1 class="header">SHUT THE BOX</h1>
+    <button class="mainmenu-elem">
         <a href="@controllers.routes.ShutTheBoxController.ingame">START GAME</a>
     </button>
     <br>
@@ -13,7 +14,8 @@
     <label for="ai">Play vs. AI</label>
     <br>
     <br>
-<button>
-    <a href="@controllers.routes.ShutTheBoxController.help">HELP</a>
-</button>
+    <button>
+        <a href="@controllers.routes.ShutTheBoxController.help">HELP</a>
+    </button>
+</div>
 }
