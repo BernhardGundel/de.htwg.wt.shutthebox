@@ -1,0 +1,40 @@
+@(controller:de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface)
+
+@field = @{ controller.matchfield.field }
+@size = @{ controller.matchfield.field.size }
+@dice = @{ controller.dice }
+
+@main("HTWG Shut The Box") {
+    <div class="gamecontainer">
+        <div class="game">
+            <span class="cell">
+                @for(index <- 0 until size) {
+                    @{if(field(index).isShut) {
+                        <div>
+                            { index + 1 }
+                        </div>
+                    }
+                    else
+                        <button>
+                            { index + 1 }
+                        </button>
+                    }
+                }
+                <br>
+                @for(index <- 0 until size) {
+                    <span>===</span>
+                }
+                <br>
+            </span>
+            <br>
+            <br>
+            <div>
+                @{dice(0).value}
+                @{dice(1).value}
+            </div>
+            <br>
+            <br>
+            <button>ROLL DICE</button>
+        </div>
+    </div>
+}
