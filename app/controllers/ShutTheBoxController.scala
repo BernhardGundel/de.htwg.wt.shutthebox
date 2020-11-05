@@ -24,4 +24,14 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(views.html.ingame(gameController))
   }
 
+  def doShut(i:Int): Action[AnyContent] = Action {
+    gameController.doShut(i)
+    Ok(views.html.ingame(gameController))
+  }
+
+  def rollDice: Action[AnyContent] = Action {
+    gameController.rollDice
+    Ok(views.html.ingame(gameController))
+  }
+
 }

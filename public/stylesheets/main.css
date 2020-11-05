@@ -1,3 +1,98 @@
-.header {
-    color: red;
+.main-menu-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
+
+.menu-button {
+    width: 10em;
+    height: 3em;
+    font-size: 1.5em;
+    border: 4px solid red;
+    border-radius: 1em;
+    outline: none;
+}
+
+.cell {
+    width: 2rem;
+    height: 4rem;
+}
+
+.dice-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dice {
+    display: inline-block;
+    text-align: center;
+    border: 1px solid #999;
+    border-radius: 1rem;
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    line-height: 4rem;
+    background-color: #ccc;
+}
+
+
+.matchfield-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+}
+
+.matchfield-divider {
+    width: 100%;
+    height: 10%;
+    border: 2px solid #888;
+    border-radius: 999px;
+}
+
+.grid-unshut-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "u1 u2 u3 u4 u5 u6 u7 u8 u9 u10 u11 u12"
+}
+
+.grid-shut-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-template-areas:
+    "s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12";
+}
+
+.grid-u1 { grid-area: u1; }
+.grid-u2 { grid-area: u2; }
+.grid-u3 { grid-area: u3; }
+.grid-u4 { grid-area: u4; }
+.grid-u5 { grid-area: u5; }
+.grid-u6 { grid-area: u6; }
+.grid-u7 { grid-area: u7; }
+.grid-u8 { grid-area: u8; }
+.grid-u9 { grid-area: u9; }
+.grid-u10 { grid-area: u10; }
+.grid-u11 { grid-area: u11; }
+.grid-u12 { grid-area: u12; }
+
+.grid-s1 { grid-area: s1; }
+.grid-s2 { grid-area: s2; }
+.grid-s3 { grid-area: s3; }
+.grid-s4 { grid-area: s4; }
+.grid-s5 { grid-area: s5; }
+.grid-s6 { grid-area: s6; }
+.grid-s7 { grid-area: s7; }
+.grid-s8 { grid-area: s8; }
+.grid-s9 { grid-area: s9; }
+.grid-s10 { grid-area: s10; }
+.grid-s11 { grid-area: s11; }
+.grid-s12 { grid-area: s12; }

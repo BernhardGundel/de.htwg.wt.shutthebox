@@ -5,36 +5,50 @@
 @dice = @{ controller.dice }
 
 @main("HTWG Shut The Box") {
-    <div class="gamecontainer">
-        <div class="game">
-            <span class="cell">
+    <div class="matchfield-container">
+            <div class="grid-unshut-container">
                 @for(index <- 0 until size) {
-                    @{if(field(index).isShut) {
-                        <div>
-                            { index + 1 }
+                    @if(!field(index).isShut) {
+                        <div class="grid-u@{index + 1}">
+                            <button class="cell" onclick="location.href='/shut/@{index + 1}'">
+                                @{index + 1}
+                            </button>
                         </div>
                     }
-                    else
-                        <button>
-                            { index + 1 }
+                }
+            </div>
+            <br>
+            <!-- @for(index <- 0 until size) {
+                <span>===</span>
+            } -->
+            <div class="matchfield-divider"></div>
+            <br>
+            <div class="grid-shut-container">
+            @for(index <- 0 until size) {
+                @if(field(index).isShut) {
+                    <div class="grid-s@{index + 1}">
+                        <button class="cell">
+                            @{index + 1}
                         </button>
-                    }
+                    </div>
                 }
-                <br>
-                @for(index <- 0 until size) {
-                    <span>===</span>
-                }
-                <br>
-            </span>
+            }
+            </div>
             <br>
-            <br>
-            <div>
+        <br>
+        <br>
+        <div class="dice-container">
+            <div class="dice">
                 @{dice(0).value}
+            </div>
+            <div class="dice">
                 @{dice(1).value}
             </div>
             <br>
             <br>
-            <button>ROLL DICE</button>
+            <div class="dice-container">
+                <button onclick="location.href='/rollDice'">WÜRFELN!</button>
+            </div>
         </div>
     </div>
 }

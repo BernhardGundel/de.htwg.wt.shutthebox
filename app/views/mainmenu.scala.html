@@ -1,19 +1,21 @@
 @()
 
 @main("HTWG Shut The Box") {
-<h1 class="header">SHUT THE BOX</h1>
-<button>
-    <a href="@controllers.routes.ShutTheBoxController.ingame">START GAME</a>
-</button>
-<br>
-<input type="checkbox" id="fieldsize" name="fieldsize">
-<label for="fieldsize">Big Matchfield</label>
+<div class="main-menu-container">
+    <h1 class="header">SHUT THE BOX</h1>
+    <button class="menu-button" onclick='location.href="@controllers.routes.ShutTheBoxController.ingame"'>
+        <a >START GAME</a>
+    </button>
+    <br>
+    <input type="checkbox" id="fieldsize" name="fieldsize">
+    <label for="fieldsize">Big Matchfield</label>
 
-<input type="checkbox" id="ai" name="ai">
-<label for="ai">Play vs. AI</label>
-<br>
-<br>
-<button>
-    <a href="@controllers.routes.ShutTheBoxController.help">HELP</a>
-</button>
+    <input type="checkbox" id="ai" name="ai">
+    <label for="ai">Play vs. AI</label>
+    <br>
+    <br>
+    <button>
+        <a href="@controllers.routes.ShutTheBoxController.help">HELP</a>
+    </button>
+</div>
 }
