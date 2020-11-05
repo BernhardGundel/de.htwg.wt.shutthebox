@@ -5,50 +5,52 @@
 @dice = @{ controller.dice }
 
 @main("HTWG Shut The Box") {
-    <div class="matchfield-container">
-            <div class="grid-unshut-container">
-                @for(index <- 0 until size) {
-                    @if(!field(index).isShut) {
-                        <div class="grid-u@{index + 1}">
-                            <button class="cell" onclick="location.href='/shut/@{index + 1}'">
-                                @{index + 1}
-                            </button>
-                        </div>
-                    }
-                }
-            </div>
-            <br>
-            <!-- @for(index <- 0 until size) {
-                <span>===</span>
-            } -->
-            <div class="matchfield-divider"></div>
-            <br>
-            <div class="grid-shut-container">
-            @for(index <- 0 until size) {
-                @if(field(index).isShut) {
-                    <div class="grid-s@{index + 1}">
-                        <button class="cell">
-                            @{index + 1}
-                        </button>
-                    </div>
-                }
+<!-- <div class="fancy-background"></div> -->
+<div class="matchfield-container">
+    <div class="grid-unshut-container">
+        @for(index <- 0 until size) {
+            @if(!field(index).isShut) {
+                <div class="grid-u@{index + 1}">
+                    <button class="cell font-light" onclick="location.href='/shut/@{index + 1}'">
+                        @{index + 1}
+                    </button>
+                </div>
             }
-            </div>
-            <br>
+        }
+    </div>
+    <br>
+    <div class="matchfield-divider"></div>
+    <br>
+    <div class="grid-shut-container">
+        <div class="grid-s1">
+            <button class="cell-spacer" disabled>
+            </button>
+        </div>
+        @for(index <- 0 until size) {
+            @if(field(index).isShut) {
+                <div class="grid-s@{index + 1}">
+                    <button class="cell-shut font-light" disabled>
+                        @{index + 1}
+                    </button>
+                </div>
+            }
+        }
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="dice-container">
+        <div class="dice">
+            @{dice(0).value}
+        </div>
+        <div class="dice">
+            @{dice(1).value}
+        </div>
         <br>
         <br>
         <div class="dice-container">
-            <div class="dice">
-                @{dice(0).value}
-            </div>
-            <div class="dice">
-                @{dice(1).value}
-            </div>
-            <br>
-            <br>
-            <div class="dice-container">
-                <button onclick="location.href='/rollDice'">WÜRFELN!</button>
-            </div>
+            <button class="menu-button" onclick="location.href='/rollDice'">WÜRFELN!</button>
         </div>
     </div>
+</div>
 }

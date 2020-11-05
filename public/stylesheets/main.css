@@ -1,22 +1,105 @@
-.main-menu-container {
+@import url('https://fonts.googleapis.com/css2?family=McLaren&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&display=swap');
+
+/***********************
+ * Global default font *
+ ***********************/
+html * {
+    font-family: 'Londrina Solid', cursive;
+}
+
+/*********
+ * Fonts *
+ *********/
+.font-mclaren {
+    font-family: 'McLaren', cursive;
+}
+
+.font-londrina {
+    font-family: 'Londrina Solid', cursive;
+}
+
+.font-thin {
+    font-weight: 100;
+}
+
+.font-light {
+    font-weight: 300;
+}
+
+.font-regular {
+    font-weight: 400;
+}
+
+.font-bold {
+    font-weight: 900;
+}
+
+.center {
     position: absolute;
-    top: 50%;
+    top: 35%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.scale-2 {
+    margin: 1rem;
+    transform: scale(2);
+}
+
+.menu-items-container {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header {
+    font-size: 48pt;
+    text-align: center;
+    border-bottom: 2px solid black;
+    text-shadow: 4px 4px #00000044;
+}
+
+.header-mirror {
+    font-size: 48pt;
+    text-align: center;
+    color: #eee;
+    transform: scale(1, -1);
+}
+
+.rules-container {
+    text-align: center;
 }
 
 .menu-button {
     width: 10em;
     height: 3em;
     font-size: 1.5em;
-    border: 4px solid red;
-    border-radius: 1em;
+    border: 2px solid black;
+    border-radius: .5em;
     outline: none;
+    background-color: white;
+}
+
+.menu-button:hover {
+    animation: wobble 0.4s ease-in-out;
 }
 
 .cell {
-    width: 2rem;
+    width: 2.5rem;
     height: 4rem;
+}
+
+.cell-shut {
+    width: 2.5rem;
+    height: 4rem;
+    transform: scale(1, -1);
+}
+
+.cell-spacer {
+    width: 2.5rem;
+    height: 4rem;
+    opacity: 0;
 }
 
 .dice-container {
@@ -35,6 +118,7 @@
     font-size: 2rem;
     line-height: 4rem;
     background-color: #ccc;
+    user-select: none;
 }
 
 
@@ -53,8 +137,12 @@
     border-radius: 999px;
 }
 
+/************************
+ * Grids for matchfield *
+ ************************/
 .grid-unshut-container {
   display: grid;
+  justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
@@ -64,6 +152,7 @@
 
 .grid-shut-container {
   display: grid;
+  justify-items: center;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   gap: 0px 0px;
@@ -96,3 +185,65 @@
 .grid-s10 { grid-area: s10; }
 .grid-s11 { grid-area: s11; }
 .grid-s12 { grid-area: s12; }
+
+.fancy-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background:
+    radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+    background-color:#282828;
+    background-size:16px 16px;
+}
+
+
+
+/**************
+ * Animations *
+***************/
+@keyframes bop {
+  0% {
+    transform: scale(0.9);
+  }
+  50%,
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes bop2 {
+  0% {
+    transform: scale(1, -0.9);
+  }
+  50%,
+  100% {
+    transform: scale(1, -1);
+  }
+}
+
+@keyframes wobble {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.bop {
+    animation: bop 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards infinite
+        alternate;
+}
+
+.bop2 {
+    animation: bop2 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards infinite
+            alternate;
+}
