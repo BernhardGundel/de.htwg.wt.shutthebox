@@ -6,7 +6,11 @@
 
 @main("HTWG Shut The Box") {
 <!-- <div class="fancy-background"></div> -->
+<button class="menu-button back-to-menu-button" onclick="location.href='/'"></button>
+
 <div class="matchfield-container">
+    <div>
+    </div>
     <div class="grid-unshut-container">
         @for(index <- 0 until size) {
             @if(!field(index).isShut) {
