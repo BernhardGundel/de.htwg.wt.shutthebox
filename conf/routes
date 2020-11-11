@@ -12,6 +12,8 @@ GET     /ingame                    controllers.ShutTheBoxController.ingame
 
 GET     /shut/:index               controllers.ShutTheBoxController.doShut(index:Int)
 
+GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
+
 GET     /rollDice                  controllers.ShutTheBoxController.rollDice
 
 

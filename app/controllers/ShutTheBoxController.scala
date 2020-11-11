@@ -18,9 +18,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
   }
 
   def ingame(): Action[AnyContent] = Action {
-    gameController.startGame(0, ai = false)
-    gameController.rollDice
-
+    gameController.startGame(1, ai = false)
     Ok(views.html.ingame(gameController))
   }
 
@@ -30,6 +28,12 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
   }
 
   def rollDice: Action[AnyContent] = Action {
+    gameController.rollDice
+    Ok(views.html.ingame(gameController))
+  }
+
+  def nextPlayer: Action[AnyContent] = Action {
+    gameController.setCurrentPlayer()
     Ok(views.html.ingame(gameController))
   }
 
