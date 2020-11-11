@@ -1,0 +1,24 @@
+@(scorePlayer1: Integer, scorePlayer2: Integer)
+
+@main("HTWG Shut The Box") {
+    <div class="center text-center">
+        <div class="font-large"><u>GAME OVER!</u></div>
+        <br>
+        <div class="font-medium">Spieler 1: @scorePlayer1 Punkte</div>
+        <div class="font-medium">Spieler 2: @scorePlayer2 Punkte</div>
+        <br><br><br>
+        @if(scorePlayer1 == scorePlayer2) {
+            <div class="font-medium">Das Spiel endet unentschieden :-(</div>
+        }
+        @if(scorePlayer1 < scorePlayer2) {
+        <div class="font-medium">Spieler 1 gewinnt!</div>
+        }
+        @if(scorePlayer1 > scorePlayer2) {
+        <div class="font-medium">Spieler 2 gewinnt!</div>
+        }
+        <br>
+        <br>
+        <br>
+        <button onclick="location.href='/'" class="menu-button">ZURÜCK ZUM HAUPTMENÜ</button>
+    </div>
+}

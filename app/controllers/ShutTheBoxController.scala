@@ -34,7 +34,12 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
 
   def nextPlayer: Action[AnyContent] = Action {
     gameController.setCurrentPlayer()
-    Ok(views.html.ingame(gameController))
+    if (gameController.currentPlayerIndex < 2) {
+      Ok(views.html.ingame(gameController))
+    } else {
+      val players = gameController.getPlayers
+      Ok(views.html.scoreboard(players(0).score, players(1).score))
+    }
   }
 
 }
