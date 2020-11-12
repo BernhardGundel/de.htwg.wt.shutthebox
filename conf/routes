@@ -16,6 +16,10 @@ GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
 
 GET     /rollDice                  controllers.ShutTheBoxController.rollDice
 
+GET     /undo                      controllers.ShutTheBoxController.undo
+
+GET     /redo                      controllers.ShutTheBoxController.redo
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

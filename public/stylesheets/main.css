@@ -110,6 +110,12 @@ html * {
     background-origin: content-box;
 }
 
+.undo-redo-button-container {
+    position: absolute;
+    top: 2.5%;
+    right: 2.5%;
+}
+
 .menu-button:hover {
     animation: wobble 0.4s ease-in-out;
     filter: invert(1);
