@@ -3,6 +3,8 @@ import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
 import de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface
+import de.htwg.se.shutthebox.model.playerComponent.aiInterface
+import play.libs.Json
 
 
 @Singleton
@@ -78,6 +80,40 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
   def redo: Action[AnyContent] = Action {
     gameController.redoShut()
     Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
+  }
+
+  def gameToJson: Action[AnyContent] = Action {
+    val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
+    val bigMatchfield = if (gameController.matchfield.field.length == 12) true else false
+    var field: Array[Boolean] = Array()
+    var i = 0
+    for (i <- 0 until gameController.matchfield.field.length -1) {
+      field = field :+ gameController.matchfield.field(i).isShut
+    }
+    print(Json.toJson(field))
+    val die1 = gameController.dice(0).value
+    val die2 =  gameController.dice(1).value
+    val scorePlayer1 = gameController.getPlayers(0).score
+    val scorePlayer2 = gameController.getPlayers(1).score
+    val turn = gameController.currentPlayerIndex
+
+
+    val json = """
+      {
+        "ai" : $ai,
+        "bigMatchfield" : """ + bigMatchfield + """,
+        "field" : """ + Json.toJson(field) + """,
+        "dice" : {
+            "die1" : """ + die1 + """,
+            "die2" : """ + die2 + """
+        },
+        "score" : {
+          "scorePlayer1" : """ + scorePlayer1 + """,
+          "scorePlayer2" : """ + scorePlayer2 + """
+        },
+        "turn" : """ + turn + """
+    """
+    Ok(json)
   }
 
 }
