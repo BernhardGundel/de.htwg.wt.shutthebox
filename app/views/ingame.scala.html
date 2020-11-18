@@ -6,7 +6,6 @@
 @dice = @{ controller.dice }
 
 @main("HTWG Shut The Box") {
-<!-- <div class="fancy-background"></div> -->
 <button class="menu-button back-to-menu-button" onclick="location.href='/'"></button>
 <div class="undo-redo-button-container">
     <button type="button" class="btn btn-outline-dark" onclick="location.href='/undo'">UNDO</button>
@@ -15,38 +14,75 @@
 <div class="matchfield-container">
     <div>
     </div>
-    <div class="grid-unshut-container">
-        @for(index <- 0 until size) {
-            @if(!field(index).isShut) {
-                <div class="grid-u@{index + 1}">
-                    <button class="cell font-light" onclick="location.href='/shut/@{index + 1}'">
-                        @{index + 1}
-                    </button>
-                </div>
+    <!-- big matchfield -->
+    @if(size == 12) {
+        <div class="grid-unshut-container">
+            @for(index <- 0 until size) {
+                @if(!field(index).isShut) {
+                    <div class="grid-u@{index + 1}">
+                        <button class="cell font-light" onclick="location.href='/shut/@{index + 1}'">
+                            @{index + 1}
+                        </button>
+                    </div>
+                }
             }
-        }
-    </div>
+        </div>
+    }
+    <!-- small matchfield -->
+    @if(size == 9) {
+        <div class="grid-unshut-container-sm">
+            @for(index <- 0 until size) {
+                @if(!field(index).isShut) {
+                    <div class="grid-u@{index + 1}-sm">
+                        <button class="cell font-light" onclick="location.href='/shut/@{index + 1}'">
+                            @{index + 1}
+                        </button>
+                    </div>
+                }
+            }
+        </div>
+    }
     <br>
     <div class="matchfield-divider"></div>
     <br>
-    <div class="grid-shut-container">
-        <div class="grid-s1">
-            <button class="cell-spacer" disabled>
-            </button>
-        </div>
-        @for(index <- 0 until size) {
-            @if(field(index).isShut) {
-                <div class="grid-s@{index + 1}">
-                    <button class="cell-shut font-light" disabled>
-                        @{index + 1}
-                    </button>
-                </div>
+    <!-- big matchfield -->
+    @if(size == 12) {
+        <div class="grid-shut-container">
+            <div class="grid-s1">
+                <button class="cell-spacer" disabled>
+                </button>
+            </div>
+            @for(index <- 0 until size) {
+                @if(field(index).isShut) {
+                    <div class="grid-s@{index + 1}">
+                        <button class="cell-shut font-light" disabled>
+                            @{index + 1}
+                        </button>
+                    </div>
+                }
             }
-        }
-    </div>
+        </div>
+    }
+    <!-- small matchfield -->
+    @if(size == 9) {
+        <div class="grid-shut-container-sm">
+            <div class="grid-s1-sm">
+                <button class="cell-spacer" disabled>
+                </button>
+            </div>
+            @for(index <- 0 until size) {
+                @if(field(index).isShut) {
+                    <div class="grid-s@{index + 1}-sm">
+                        <button class="cell-shut font-light" disabled>
+                            @{index + 1}
+                        </button>
+                    </div>
+                }
+            }
+        </div>
+    }
     <br>
-    <br>
-    <br>
+    <div>
     @if(!errDice && !errShut && !errShutRoll) {
         <div class="alert alert-danger text-center invisible" role="alert">
             Platzhalter
@@ -58,29 +94,30 @@
         </div>
     }
     @if(errShut) {
-    <div class="alert alert-danger text-center" role="alert">
-        Dieser Spielzug ist nicht erlaubt!
-    </div>
+        <div class="alert alert-danger text-center" role="alert">
+            Dieser Spielzug ist nicht erlaubt!
+        </div>
     }
     @if(errShutRoll) {
-    <div class="alert alert-danger text-center" role="alert">
-        Bitte zuerst würfeln!
-    </div>
+        <div class="alert alert-danger text-center" role="alert">
+            Bitte zuerst würfeln!
+        </div>
     }
-    <div class="dice-container">
-        <div class="dice">
-            @{dice(0).value}
-        </div>
-        <div class="dice">
-            @{dice(1).value}
-        </div>
-        <br>
-        <br>
         <div class="dice-container">
-            <button class="menu-button" onclick="location.href='/rollDice'">WÜRFELN!</button>
-            <br><br>
-            <div class="row justify-content-center">
-                <button class="btn btn-outline-dark btn-lg" onclick="location.href='/nextPlayer'">NÄCHSTER SPIELER</button>
+            <div class="dice">
+                @{dice(0).value}
+            </div>
+            <div class="dice">
+                @{dice(1).value}
+            </div>
+            <br>
+            <br>
+            <div class="dice-container">
+                <button class="menu-button" onclick="location.href='/rollDice'">WÜRFELN!</button>
+                <br><br>
+                <div class="row justify-content-center">
+                    <button class="btn btn-outline-dark btn-lg" onclick="location.href='/nextPlayer'">NÄCHSTER SPIELER</button>
+                </div>
             </div>
         </div>
     </div>
