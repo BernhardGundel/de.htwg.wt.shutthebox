@@ -90,7 +90,6 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     for (i <- 0 until gameController.matchfield.field.length -1) {
       field = field :+ gameController.matchfield.field(i).isShut
     }
-    print(Json.toJson(field))
     val die1 = gameController.dice(0).value
     val die2 =  gameController.dice(1).value
     val scorePlayer1 = gameController.getPlayers(0).score
