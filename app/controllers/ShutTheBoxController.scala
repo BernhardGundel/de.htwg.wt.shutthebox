@@ -4,6 +4,7 @@ import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
 import de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
+import play.api.libs.json.JsValue
 import play.libs.Json
 
 
@@ -22,10 +23,19 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(views.html.index())
   }
 
-  def ingame(): Action[AnyContent] = Action {
-    gameController.startGame(1, ai = false)
-    Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
+  def ingame: Any = Action(parse.json) {
+    request: Request[JsValue] => {
+      var ai = false
+      var bigMatchfield = false
+
+      ai = (request.body \"ai").as[Boolean]
+      bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
+      gameController.startGame(if (bigMatchfield) 1 else 0, ai=ai)
+      //Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
+      // Ok(gameToJson) funzt nicht
+    }
   }
+
 
   def doShut(i:Int): Action[AnyContent] = Action {
     val result = gameController.doShut(i)
@@ -84,7 +94,10 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
 
   def gameToJson: Action[AnyContent] = Action {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
-    val bigMatchfield = if (gameController.matchfield.field.length == 12) true else false
+    val bigMatchfield = gameController.matchfield match {
+      case null => None
+      case _ => Some(gameController.matchfield.field.length < 12)
+    }
     var field: Array[Boolean] = Array()
     var i = 0
     for (i <- 0 until gameController.matchfield.field.length -1) {
@@ -99,8 +112,8 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
 
     val json = """
       {
-        "ai" : $ai,
-        "bigMatchfield" : """ + bigMatchfield + """,
+        "ai" : """ + ai + """,
+        "bigMatchfield" : """ + bigMatchfield.getOrElse("null") + """,
         "field" : """ + Json.toJson(field) + """,
         "dice" : {
             "die1" : """ + die1 + """,
@@ -111,6 +124,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
           "scorePlayer2" : """ + scorePlayer2 + """
         },
         "turn" : """ + turn + """
+      }
     """
     Ok(json)
   }

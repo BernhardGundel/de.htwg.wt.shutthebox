@@ -20,6 +20,8 @@ GET     /undo                      controllers.ShutTheBoxController.undo
 
 GET     /redo                      controllers.ShutTheBoxController.redo
 
+POST    /json                      controllers.ShutTheBoxController.ingame
+
 GET     /json                      controllers.ShutTheBoxController.gameToJson
 
 
