@@ -27,8 +27,8 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
       var ai: Boolean = false
       var bigMatchfield: Boolean = false
 
-      //ai = (request.body \"ai").as[Boolean]
-      //bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
+      ai = (request.body \"ai").as[Boolean]
+      bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
       gameController.startGame(if (bigMatchfield) 1 else 0, ai)
       Ok(request.body)
     }
