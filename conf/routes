@@ -20,9 +20,9 @@ GET     /undo                      controllers.ShutTheBoxController.undo
 
 GET     /redo                      controllers.ShutTheBoxController.redo
 
-POST    /json                      controllers.ShutTheBoxController.ingame
-
 GET     /json                      controllers.ShutTheBoxController.gameToJson
+
+PUT    /json                      controllers.ShutTheBoxController.startGame
 
 
 # Map static resources from the /public folder to the /assets URL path

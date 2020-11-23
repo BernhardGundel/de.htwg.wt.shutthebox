@@ -4,8 +4,7 @@ import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
 import de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
-import play.api.libs.json.JsValue
-import play.libs.Json
+import play.api.libs.json._
 
 
 @Singleton
@@ -23,17 +22,20 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(views.html.index())
   }
 
-  def ingame: Any = Action(parse.json) {
+  def startGame: Action[JsValue] = Action(parse.json) {
     request: Request[JsValue] => {
-      var ai = false
-      var bigMatchfield = false
+      var ai: Boolean = false
+      var bigMatchfield: Boolean = false
 
-      ai = (request.body \"ai").as[Boolean]
-      bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
-      gameController.startGame(if (bigMatchfield) 1 else 0, ai=ai)
-      //Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
-      // Ok(gameToJson) funzt nicht
+      //ai = (request.body \"ai").as[Boolean]
+      //bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
+      gameController.startGame(if (bigMatchfield) 1 else 0, ai)
+      Ok(request.body)
     }
+  }
+
+  def ingame: Action[AnyContent] = Action {
+    Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
   }
 
 
@@ -92,28 +94,43 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
   }
 
-  def gameToJson: Action[AnyContent] = Action {
+  def gameToJson: Action[AnyContent] = Action(parse.json) {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
       case _ => Some(gameController.matchfield.field.length < 12)
     }
     var field: Array[Boolean] = Array()
-    var i = 0
-    for (i <- 0 until gameController.matchfield.field.length -1) {
-      field = field :+ gameController.matchfield.field(i).isShut
+
+    gameController.matchfield match {
+      case null => None
+      case _ =>
+        for (i <- 0 until gameController.matchfield.field.length -1) {
+          field = field :+ gameController.matchfield.field(i).isShut
+        }
+
     }
-    val die1 = gameController.dice(0).value
-    val die2 =  gameController.dice(1).value
-    val scorePlayer1 = gameController.getPlayers(0).score
-    val scorePlayer2 = gameController.getPlayers(1).score
-    val turn = gameController.currentPlayerIndex
+
+    val  die1 = gameController.dice(0).value
+    val  die2  = gameController.dice(1).value
 
 
-    val json = """
+    var scorePlayer1 = 0
+    var scorePlayer2 = 0
+    var turn = 0
+    gameController.getPlayers(0) match {
+      case null => None
+      case _ =>
+        scorePlayer1 = gameController.getPlayers(0).score
+        scorePlayer2 = gameController.getPlayers(1).score
+        turn = gameController.currentPlayerIndex
+      
+    }
+
+    val json: JsValue = Json.parse("""
       {
         "ai" : """ + ai + """,
-        "bigMatchfield" : """ + bigMatchfield.getOrElse("null") + """,
+        "bigMatchfield" : """ + bigMatchfield.getOrElse("false") + """,
         "field" : """ + Json.toJson(field) + """,
         "dice" : {
             "die1" : """ + die1 + """,
@@ -125,7 +142,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
         },
         "turn" : """ + turn + """
       }
-    """
+    """)
     Ok(json)
   }
 

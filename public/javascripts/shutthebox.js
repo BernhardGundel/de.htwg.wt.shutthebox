@@ -30,9 +30,9 @@ function request(method, url, data, dataType, contentType) {
 
 function startGame() {
     let checkBoxMatchfield = document.getElementById("cb-matchfield");
-    request("POST", "/ingame", { bigMatchfield: checkBoxMatchfield.checked }, "json", "application/json");
+    request("PUT", "/json", { "bigMatchfield": checkBoxMatchfield.checked }, "json", "application/json");
     let checkBoxAI = document.getElementById("cb-ai");
-    request("POST", "/ingame", { ai: checkBoxAI.checked }, "json", "application/json");
+    request("PUT", "/json", { "ai": checkBoxAI.checked }, "json", "application/json");
     location.href = "/ingame"
 }
 
