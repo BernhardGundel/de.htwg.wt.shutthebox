@@ -39,28 +39,31 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
   }
 
 
-  def doShut(i:Int): Action[AnyContent] = Action {
-    val result = gameController.doShut(i)
-    if (result == "This shut is not allowed") {
-      errDice = false
-      errShut = true
-      errShutRoll = false
-    } else {
-      errDice = false
-      errShut = false
-      errShutRoll = false
+  def doShut(): Action[JsValue] = Action(parse.json) {
+    request: Request[JsValue] => {
+      val index = (request.body \"index").as[Int]
+      val result = gameController.doShut(index)
+      if (result == "This shut is not allowed") {
+        errDice = false
+        errShut = true
+        errShutRoll = false
+      } else {
+        errDice = false
+        errShut = false
+        errShutRoll = false
+      }
+      if (result == "Please roll the dice first!") {
+        errDice = false
+        errShutRoll = true
+      } else {
+        errDice = false
+        errShutRoll = false
+      }
+      Ok(request.body)
     }
-    if (result == "Please roll the dice first!") {
-      errDice = false
-      errShutRoll = true
-    } else {
-      errDice = false
-      errShutRoll = false
-    }
-    Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
   }
 
-  def rollDice: Action[AnyContent] = Action {
+  def rollDice: Action[AnyContent] = Action(parse.json) {
     val result: String = gameController.rollDice
     if (result == "Dice roll not allowed!") {
       errDice = true
@@ -71,7 +74,13 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
       errShut = false
       errShutRoll = false
     }
-    Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
+    val json: JsValue = Json.parse("""
+      {
+          "die1" : """ + gameController.dice(0).value + """,
+          "die2" : """ + gameController.dice(1).value + """
+      }
+    """)
+    Ok(json)
   }
 
   def nextPlayer: Action[AnyContent] = Action {
