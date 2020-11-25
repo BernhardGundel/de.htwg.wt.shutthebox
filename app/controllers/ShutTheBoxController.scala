@@ -13,6 +13,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
   var errDice: Boolean = false
   var errShut: Boolean = false
   var errShutRoll: Boolean = false
+  var controllerJson: JsValue = Json.parse("{}")
 
   def shutthebox: Action[AnyContent] = Action {
     Ok(views.html.mainmenu())
@@ -30,11 +31,13 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
       ai = (request.body \"ai").as[Boolean]
       bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
       gameController.startGame(if (bigMatchfield) 1 else 0, ai)
-      Ok(request.body)
+      controllerToJson()
+      Ok(controllerJson)
     }
   }
 
   def ingame: Action[AnyContent] = Action {
+    controllerToJson()
     Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
   }
 
@@ -59,7 +62,8 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
         errDice = false
         errShutRoll = false
       }
-      Ok(request.body)
+      controllerToJson()
+      Ok(controllerJson)
     }
   }
 
@@ -74,13 +78,8 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
       errShut = false
       errShutRoll = false
     }
-    val json: JsValue = Json.parse("""
-      {
-          "die1" : """ + gameController.dice(0).value + """,
-          "die2" : """ + gameController.dice(1).value + """
-      }
-    """)
-    Ok(json)
+    controllerToJson()
+    Ok(controllerJson)
   }
 
   def nextPlayer: Action[AnyContent] = Action {
@@ -103,7 +102,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
   }
 
-  def gameToJson: Action[AnyContent] = Action(parse.json) {
+  def controllerToJson: Action[AnyContent] = Action(parse.json) {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
@@ -114,7 +113,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     gameController.matchfield match {
       case null => None
       case _ =>
-        for (i <- 0 until gameController.matchfield.field.length -1) {
+        for (i <- 0 until gameController.matchfield.field.length) {
           field = field :+ gameController.matchfield.field(i).isShut
         }
 
@@ -152,6 +151,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
         "turn" : """ + turn + """
       }
     """)
+    controllerJson = json
     Ok(json)
   }
 

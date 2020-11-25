@@ -1,8 +1,8 @@
 var controller = {}
 
 
-function loadJson() {
-    $.ajax({
+function updateJson() {
+    return $.ajax({
         method: "GET",
         url: "/json",
         dataType: "json",
@@ -14,14 +14,13 @@ function loadJson() {
 }
 
 function getRequest(url) {
-    $.ajax({
+    return $.ajax({
             method: "GET",
             url: url,
             dataType: "json",
 
             success: function (response) {
                 controller = response;
-                console.log(response);
             },
             error: function(response) {
                 console.error(response);
@@ -30,7 +29,7 @@ function getRequest(url) {
 }
 
 function postRequest(method, url, data) {
-     $.ajax({
+     return $.ajax({
             method: method,
             url: url,
             data: JSON.stringify(data),
@@ -52,29 +51,42 @@ function startGame() {
     let checkBoxAI = document.getElementById("cb-ai");
     postRequest("PUT", "/json",
         { "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked });
+    updateJson();
     location.href = "/ingame"
 }
 
+
 function shut(i) {
-    loadJson();
-    postRequest("POST", "/shut", {"index": i})
-    controller.field.forEach(function(cell) {
-        if (cell) {
-            $('#unshut-' + i).css('opacity', '0');
-            $('#shut-' + i).css('opacity', '1');
-        }
+    postRequest("POST", "/shut", {"index": i}).then(() => {
+        updateJson().then(() => {
+            controller.field.forEach(function(cell) {
+                console.log(cell);
+                if (cell === true) {
+                    $('#unshut-' + i).css('opacity', '0');
+                    $('#shut-' + i).css('opacity', '1');
+                }
+            });
+        });
+
     });
-    loadJson();
 }
 
 function rollDice() {
-    getRequest("/rollDice");
-    $('#die1').html(JSON.stringify(controller.dice.die1));
-    $('#die2').html(JSON.stringify(controller.dice.die2));
-    loadJson();
+    getRequest("/rollDice").then(() => {
+        updateDice();
+    });
+
+}
+
+function updateDice() {
+    updateJson().then(() => {
+        console.log(controller);
+        $('#die1').html(JSON.stringify(controller.dice.die1));
+        $('#die2').html(JSON.stringify(controller.dice.die2));
+    });
 }
 
 
 $( document ).ready(function() {
-    loadJson();
+    updateJson();
 });

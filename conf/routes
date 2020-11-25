@@ -20,7 +20,7 @@ GET     /undo                      controllers.ShutTheBoxController.undo
 
 GET     /redo                      controllers.ShutTheBoxController.redo
 
-GET     /json                      controllers.ShutTheBoxController.gameToJson
+GET     /json                      controllers.ShutTheBoxController.controllerToJson
 
 PUT     /json                      controllers.ShutTheBoxController.startGame
 
