@@ -58,16 +58,7 @@ function startGame() {
 
 function shut(i) {
     postRequest("POST", "/shut", {"index": i}).then(() => {
-        updateJson().then(() => {
-            controller.field.forEach(function(cell) {
-                console.log(cell);
-                if (cell === true) {
-                    $('#unshut-' + i).css('opacity', '0');
-                    $('#shut-' + i).css('opacity', '1');
-                }
-            });
-        });
-
+        updateField();
     });
 }
 
@@ -78,11 +69,52 @@ function rollDice() {
 
 }
 
+function nextPlayer() {
+    getRequest("/nextPlayer").then(() => {
+        updateJson().then(() => {
+            if (controller.turn <= 1) {
+                updateField();
+            } else {
+                location.href = "/scoreboard";
+            }
+        });
+    });
+}
+
+function updateField() {
+    updateJson().then(() => {
+        console.log(controller);
+        for (let i = 0; i < controller.field.length; i++) {
+            if (controller.field[i]) {
+                $('#unshut-' + (i+1)).css('opacity', '0');
+                $('#shut-' + (i+1)).css('opacity', '1');
+            } else {
+                $('#unshut-' + (i+1)).css('opacity', '1');
+                $('#shut-' + (i+1)).css('opacity', '0');
+            }
+        }
+    });
+}
+
 function updateDice() {
     updateJson().then(() => {
         console.log(controller);
         $('#die1').html(JSON.stringify(controller.dice.die1));
         $('#die2').html(JSON.stringify(controller.dice.die2));
+    });
+}
+
+function undo() {
+    console.log("undo");
+    getRequest("/undo").then(() => {
+        updateField();
+    });
+}
+
+function redo() {
+    console.log("redo");
+    getRequest("/redo").then(() => {
+        updateField();
     });
 }
 

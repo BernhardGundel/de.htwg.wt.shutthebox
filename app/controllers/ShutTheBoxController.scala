@@ -84,22 +84,25 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
 
   def nextPlayer: Action[AnyContent] = Action {
     gameController.setCurrentPlayer()
-    if (gameController.currentPlayerIndex < 2) {
-      Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
-    } else {
-      val players = gameController.getPlayers
-      Ok(views.html.scoreboard(players(0).score, players(1).score))
-    }
+    controllerToJson()
+    Ok(controllerJson)
+  }
+
+  def scoreboard: Action[AnyContent] = Action {
+    val players = gameController.getPlayers
+    Ok(views.html.scoreboard(players(0).score, players(1).score))
   }
 
   def undo: Action[AnyContent] = Action {
     gameController.undoShut()
-    Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
+    controllerToJson()
+    Ok(controllerJson)
   }
 
   def redo: Action[AnyContent] = Action {
     gameController.redoShut()
-    Ok(views.html.ingame(gameController, errDice, errShut, errShutRoll))
+    controllerToJson()
+    Ok(controllerJson)
   }
 
   def controllerToJson: Action[AnyContent] = Action(parse.json) {
@@ -154,5 +157,6 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     controllerJson = json
     Ok(json)
   }
+
 
 }

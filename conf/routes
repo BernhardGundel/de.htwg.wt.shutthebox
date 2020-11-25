@@ -14,6 +14,8 @@ POST    /shut                      controllers.ShutTheBoxController.doShut
 
 GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
 
+GET     /scoreboard                controllers.ShutTheBoxController.scoreboard
+
 GET     /rollDice                  controllers.ShutTheBoxController.rollDice
 
 GET     /undo                      controllers.ShutTheBoxController.undo

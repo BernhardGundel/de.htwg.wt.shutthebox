@@ -7,19 +7,17 @@
 @main("HTWG Shut The Box") {
 <button class="menu-button back-to-menu-button" onclick="location.href='/'"></button>
 <div class="undo-redo-button-container">
-    <button type="button" class="btn btn-outline-dark" onclick="location.href='/undo'">UNDO</button>
-    <button type="button" class="btn btn-outline-dark" onclick="location.href='/redo'">REDO</button>
+    <button type="button" class="btn btn-outline-dark" onclick="undo()">UNDO</button>
+    <button type="button" class="btn btn-outline-dark" onclick="redo()">REDO</button>
 </div>
 <div class="matchfield-container">
     <div>
     </div>
     <!-- matchfield -->
     @for(index <- 0 until size) {
-        @if(!field(index).isShut) {
-            <button id="unshut-@{index + 1}" class="cell-flex cell font-light" onclick="shut(@{index + 1})">
-                @{index + 1}
-            </button>
-        }
+        <button id="unshut-@{index + 1}" class="cell-flex cell font-light" onclick="shut(@{index + 1})">
+            @{index + 1}
+        </button>
     }
     <br>
     <br>
@@ -64,11 +62,11 @@
                 <button class="menu-button" onclick="rollDice()">WÜRFELN!</button>
                 <br><br>
                 <div class="row justify-content-center">
-                    <button class="btn btn-outline-dark btn-lg" onclick="location.href='/nextPlayer'">NÄCHSTER SPIELER</button>
+                    <button class="btn btn-outline-dark btn-lg" onclick="nextPlayer()">NÄCHSTER SPIELER</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>updateDice()</script>
+<script>updateDice(); updateField();</script>
 }
