@@ -1,7 +1,4 @@
-@(controller:de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface,
-    errDice: Boolean, errShut: Boolean, errShutRoll: Boolean)
-
-@field = @{ controller.matchfield.field }
+@(controller:de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface)
 @size = @{ controller.matchfield.field.size }
 
 @main("HTWG Shut The Box") {
@@ -31,26 +28,8 @@
     }
     <br>
     <div>
-    @if(!errDice && !errShut && !errShutRoll) {
-        <div class="alert alert-danger text-center invisible" role="alert">
-            Platzhalter
-        </div>
-    }
-    @if(errDice) {
-        <div class="alert alert-danger text-center" role="alert">
-            Würfeln ist noch nicht erlaubt!
-        </div>
-    }
-    @if(errShut) {
-        <div class="alert alert-danger text-center" role="alert">
-            Dieser Spielzug ist nicht erlaubt!
-        </div>
-    }
-    @if(errShutRoll) {
-        <div class="alert alert-danger text-center" role="alert">
-            Bitte zuerst würfeln!
-        </div>
-    }
+        <br>
+        <div id="err" class="alert alert-danger text-center" role="alert"></div>
         <div class="dice-container">
             <div id="die1" class="dice">
             </div>
@@ -68,5 +47,5 @@
         </div>
     </div>
 </div>
-<script>updateDice(); updateField();</script>
+<script>updateErrorMsg(); updateDice(); updateField();</script>
 }

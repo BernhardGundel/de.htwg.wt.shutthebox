@@ -59,14 +59,39 @@ function startGame() {
 function shut(i) {
     postRequest("POST", "/shut", {"index": i}).then(() => {
         updateField();
+        updateErrorMsg();
     });
 }
 
 function rollDice() {
     getRequest("/rollDice").then(() => {
         updateDice();
+        updateErrorMsg();
     });
 
+}
+
+function updateErrorMsg() {
+    updateJson().then(() => {
+        msg = controller.error;
+        elem = $('#err');
+        if (msg.length <= 1) {
+            elem.html("ERROR");
+            elem.css('visibility', 'hidden');
+        } else {
+            if (msg == "Dice roll not allowed!") {
+                elem.html("Würfeln ist noch nicht erlaubt!");
+            }
+            else if (msg == "This shut is not allowed") {
+                elem.html("Dieser Spielzug ist nicht erlaubt!");
+            }
+            else if (msg == "Please roll the dice first!") {
+                elem.html("Bitte zuerst würfeln!");
+            }
+
+            elem.css('visibility', 'visible');
+        }
+    });
 }
 
 function nextPlayer() {
@@ -74,6 +99,7 @@ function nextPlayer() {
         updateJson().then(() => {
             if (controller.turn <= 1) {
                 updateField();
+                updateErrorMsg();
             } else {
                 location.href = "/scoreboard";
             }
@@ -108,6 +134,7 @@ function undo() {
     console.log("undo");
     getRequest("/undo").then(() => {
         updateField();
+        updateErrorMsg();
     });
 }
 
@@ -115,6 +142,7 @@ function redo() {
     console.log("redo");
     getRequest("/redo").then(() => {
         updateField();
+        updateErrorMsg();
     });
 }
 
