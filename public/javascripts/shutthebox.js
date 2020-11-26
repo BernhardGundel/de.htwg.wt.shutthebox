@@ -97,12 +97,19 @@ function updateErrorMsg() {
     });
 }
 
+function resetErrorMsg() {
+    elem = $('#err')
+    elem.html("ERROR");
+    elem.css('visibility', 'hidden');
+
+}
+
 function nextPlayer() {
     getRequest("/nextPlayer").then(() => {
         updateJson().then(() => {
             if (controller.turn <= 1) {
                 updateField();
-                updateErrorMsg();
+                resetErrorMsg();
             } else {
                 location.href = "/scoreboard";
             }
