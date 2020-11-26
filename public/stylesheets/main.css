@@ -285,8 +285,7 @@ input[type="checkbox"] {
         top: 35%;
         left: 0%;
         transform: translate(0%, -50%);
-        margin-left: .75rem;
-        margin-right: .75rem;
+        margin-left: 3rem;
     }
     .dice-container {
          position: absolute;

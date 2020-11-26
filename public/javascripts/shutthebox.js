@@ -50,9 +50,12 @@ function startGame() {
     let checkBoxMatchfield = document.getElementById("cb-matchfield");
     let checkBoxAI = document.getElementById("cb-ai");
     postRequest("PUT", "/json",
-        { "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked });
-    updateJson();
-    location.href = "/ingame"
+        { "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked }).then(() => {
+            updateJson().then(() => {
+            location.href = "/ingame"
+        });
+    });
+
 }
 
 

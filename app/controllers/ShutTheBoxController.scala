@@ -14,7 +14,6 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
   var errorMsg: String = ""
 
   var controllerJson: JsValue = Json.parse("{}")
-  controllerToJson()
 
   def shutthebox: Action[AnyContent] = Action {
     Ok(views.html.mainmenu())
