@@ -2,9 +2,10 @@ package controllers
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
-import de.htwg.se.shutthebox.controller.controllerComponent.{AllCellsShut, CellShut, ControllerInterface, DiceRolled, Redone, ShowScoreBoard, Undone}
+import de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
 import play.api.libs.json._
+import play.api.libs.streams.ActorFlow
 
 
 @Singleton
@@ -128,5 +129,12 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     """)
     controllerJson = json
     Ok(json)
+  }
+
+  def socket = WebSocket.accept[String, String] { request =>
+    ActorFlow.actorRef { out =>
+      println("Connect received")
+      ShutTheBoxWebSocketActorFactory.create(out, gameController, shutTheBoxController = this)
+    }
   }
 }
