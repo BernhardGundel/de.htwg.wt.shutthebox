@@ -1,5 +1,5 @@
 var controller = {}
-
+var websocket = new WebSocket("ws://localhost:9000/websocket");
 
 function updateJson() {
     return $.ajax({
@@ -55,22 +55,26 @@ function startGame() {
             location.href = "/ingame"
         });
     });
+    //websocket.send({ "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked });
+    //location.href = "/ingame"
 
 }
 
 
 function shut(i) {
-    postRequest("POST", "/shut", {"index": i}).then(() => {
+    /*postRequest("POST", "/shut", {"index": i}).then(() => {
         updateField();
         updateErrorMsg();
-    });
+    });*/
+    websocket.send({"index": i});
+    updateField();
+    updateErrorMsg();
 }
 
 function rollDice() {
-    getRequest("/rollDice").then(() => {
-        updateDice();
-        updateErrorMsg();
-    });
+    getRequest("/rollDice");
+    updateDice();
+    updateErrorMsg();
 
 }
 
@@ -156,7 +160,32 @@ function redo() {
     });
 }
 
+function connectWebSocket() {
+    websocket.onopen = (event) => {
+        console.log("Connected to Websocket");
+    };
+
+    websocket.onclose = () => {
+        console.log("Connection with Websocket Closed!");
+    };
+
+    websocket.onerror = (error) => {
+        console.log("Error in Websocket Occured: " + error);
+    };
+
+    websocket.onmessage = (e) => {
+    console.log("onmessage");
+        //if (typeof e.data === "JsValue") {
+            let controller = JSON.parse(e.data);
+            updateField();
+            updateDice();
+            updateErrorMsg();
+        //}
+    };
+}
+
 
 $( document ).ready(function() {
     updateJson();
+    connectWebSocket();
 });

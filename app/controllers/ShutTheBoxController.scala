@@ -1,4 +1,6 @@
 package controllers
+import akka.actor.ActorSystem
+import akka.stream.Materializer
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
@@ -9,7 +11,7 @@ import play.api.libs.streams.ActorFlow
 
 
 @Singleton
-class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
+class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
 
   val gameController: ControllerInterface = ShutTheBox.controller
   var errorMsg: String = ""
@@ -131,7 +133,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) extends AbstractC
     Ok(json)
   }
 
-  def socket = WebSocket.accept[String, String] { request =>
+  def socket = WebSocket.accept[JsValue, JsValue] { request =>
     ActorFlow.actorRef { out =>
       println("Connect received")
       ShutTheBoxWebSocketActorFactory.create(out, gameController, shutTheBoxController = this)
