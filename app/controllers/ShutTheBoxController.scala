@@ -1,13 +1,15 @@
 package controllers
-import akka.actor.ActorSystem
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.stream.Materializer
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
-import de.htwg.se.shutthebox.controller.controllerComponent.ControllerInterface
+import de.htwg.se.shutthebox.controller.controllerComponent.{CellShut, ControllerInterface, DiceRolled, Redone, Undone}
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
+
+import scala.swing.Reactor
 
 
 @Singleton
@@ -44,21 +46,20 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
   }
 
 
-  def doShut(): Action[JsValue] = Action(parse.json) {
-    request: Request[JsValue] => {
-      val index = (request.body \"index").as[Int]
+  def doShut(index: Int): Action[AnyContent] = Action(parse.json) {
+    /*request: Request[JsValue] => {
+      val index = (request.body \"index").as[Int]*/
+      println("doShut")
       val result = gameController.doShut(index)
       errorMsg = result
       controllerToJson()
       Ok(controllerJson)
-    }
   }
 
-  def rollDice: Action[AnyContent] = Action(parse.json) {
+  def rollDice: Action[AnyContent] = {
     val result: String = gameController.rollDice
     errorMsg = result
     controllerToJson()
-    Ok(controllerJson)
   }
 
   def nextPlayer: Action[AnyContent] = Action {
@@ -136,7 +137,49 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
   def socket = WebSocket.accept[String, String] { request =>
     ActorFlow.actorRef { out =>
       println("Connect received")
-      ShutTheBoxWebSocketActorFactory.create(out, gameController, shutTheBoxController = this)
+      ShutTheBoxWebSocketActorFactory.create(out)
     }
+  }
+
+
+  object ShutTheBoxWebSocketActorFactory {
+    def create(out: ActorRef) = {
+      Props(new ShutTheBoxWebSocketActor(out))
+    }
+  }
+
+  class ShutTheBoxWebSocketActor(out: ActorRef) extends Actor with Reactor {
+    listenTo(gameController)
+
+    def receive: Actor.Receive = {
+      case msg: String =>
+        msg match {
+          case "rollDice" => rollDice
+          case msg if msg.contains("index") =>
+            val index: Int = (Json.parse(msg) \ "index").as[Int]
+            gameController.doShut(index)
+        }
+        controllerToJson()
+        println(controllerJson)
+        out ! (controllerJson.toString())
+        println("Sent Json to Client: " + msg)
+    }
+
+    reactions += {
+      case event: DiceRolled => sendJsonToClient
+      case event: CellShut => sendJsonToClient
+      case event: Undone => sendJsonToClient
+      case event: Redone => sendJsonToClient
+      // case event: ShowScoreBoard => printScoreBoard (???)
+      // case event: All CellsShut => print("All cells shut! :-)") (???)
+    }
+
+
+    def sendJsonToClient = {
+      println("Received event from Controller")
+      controllerToJson()
+      out ! (controllerJson.toString())
+    }
+
   }
 }

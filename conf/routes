@@ -10,7 +10,7 @@ GET     /help                      controllers.ShutTheBoxController.help
 
 GET     /ingame                    controllers.ShutTheBoxController.ingame
 
-POST    /shut                      controllers.ShutTheBoxController.doShut
+#POST    /shut                      controllers.ShutTheBoxController.doShut()
 
 GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
 
