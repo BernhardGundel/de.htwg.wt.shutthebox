@@ -56,7 +56,7 @@ function startGame() {
         });
     });
     //websocket.send({ "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked });
-    //location.href = "/ingame"
+    location.href = "/ingame"
 
 }
 
@@ -66,39 +66,38 @@ function shut(i) {
         updateField();
         updateErrorMsg();
     });*/
-    websocket.send({"index": i});
+    websocket.send(JSON.stringify({"index": i}));
     updateField();
     updateErrorMsg();
 }
 
 function rollDice() {
-    getRequest("/rollDice");
+    //getRequest("/rollDice");
+    websocket.send("Send dice pls");
     updateDice();
     updateErrorMsg();
 
 }
 
 function updateErrorMsg() {
-    updateJson().then(() => {
-        msg = controller.error;
-        elem = $('#err');
-        if (msg.length <= 1) {
-            elem.html("ERROR");
-            elem.css('visibility', 'hidden');
-        } else {
-            if (msg == "Dice roll not allowed!") {
-                elem.html("Würfeln ist noch nicht erlaubt!");
-            }
-            else if (msg == "This shut is not allowed") {
-                elem.html("Dieser Spielzug ist nicht erlaubt!");
-            }
-            else if (msg == "Please roll the dice first!") {
-                elem.html("Bitte zuerst würfeln!");
-            }
-
-            elem.css('visibility', 'visible');
+    msg = controller.error;
+    elem = $('#err');
+    if (msg.length <= 1) {
+        elem.html("ERROR");
+        elem.css('visibility', 'hidden');
+    } else {
+        if (msg == "Dice roll not allowed!") {
+            elem.html("Würfeln ist noch nicht erlaubt!");
         }
-    });
+        else if (msg == "This shut is not allowed") {
+            elem.html("Dieser Spielzug ist nicht erlaubt!");
+        }
+        else if (msg == "Please roll the dice first!") {
+            elem.html("Bitte zuerst würfeln!");
+        }
+
+        elem.css('visibility', 'visible');
+    }
 }
 
 function resetErrorMsg() {
@@ -137,11 +136,9 @@ function updateField() {
 }
 
 function updateDice() {
-    updateJson().then(() => {
-        console.log(controller);
-        $('#die1').html(JSON.stringify(controller.dice.die1));
-        $('#die2').html(JSON.stringify(controller.dice.die2));
-    });
+    console.log(controller);
+    $('#die1').html(JSON.stringify(controller.dice.die1));
+    $('#die2').html(JSON.stringify(controller.dice.die2));
 }
 
 function undo() {
@@ -174,18 +171,18 @@ function connectWebSocket() {
     };
 
     websocket.onmessage = (e) => {
-    console.log("onmessage");
-        //if (typeof e.data === "JsValue") {
-            let controller = JSON.parse(e.data);
+        console.log("onmessage");
+        if (typeof e.data === "string") {
+            controller = JSON.parse(e.data);
             updateField();
             updateDice();
             updateErrorMsg();
-        //}
+        }
     };
 }
 
 
 $( document ).ready(function() {
-    updateJson();
     connectWebSocket();
+    updateJson();
 });

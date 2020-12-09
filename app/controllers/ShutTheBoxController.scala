@@ -133,7 +133,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
     Ok(json)
   }
 
-  def socket = WebSocket.accept[JsValue, JsValue] { request =>
+  def socket = WebSocket.accept[String, String] { request =>
     ActorFlow.actorRef { out =>
       println("Connect received")
       ShutTheBoxWebSocketActorFactory.create(out, gameController, shutTheBoxController = this)
