@@ -1,7 +1,7 @@
 var controller = {}
 var websocket = new WebSocket("ws://localhost:9000/websocket");
 
-function updateJson() {
+/*function updateJson() {
     return $.ajax({
         method: "GET",
         url: "/json",
@@ -11,9 +11,9 @@ function updateJson() {
             controller = response;
         }
     });
-}
+}*/
 
-function getRequest(url) {
+/*function getRequest(url) {
     return $.ajax({
             method: "GET",
             url: url,
@@ -26,9 +26,9 @@ function getRequest(url) {
                 console.error(response);
             }
         });
-}
+}*/
 
-function postRequest(method, url, data) {
+/*function postRequest(method, url, data) {
      return $.ajax({
             method: method,
             url: url,
@@ -44,20 +44,19 @@ function postRequest(method, url, data) {
                 console.error(response);
             }
         });
-}
+}*/
 
 function startGame() {
     let checkBoxMatchfield = document.getElementById("cb-matchfield");
     let checkBoxAI = document.getElementById("cb-ai");
-    postRequest("PUT", "/json",
+    /*postRequest("PUT", "/json",
         { "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked }).then(() => {
             updateJson().then(() => {
             location.href = "/ingame"
         });
-    });
-    //websocket.send({ "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked });
+    });*/
+    websocket.send(JSON.stringify({ "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked }));
     location.href = "/ingame"
-
 }
 
 
@@ -75,22 +74,23 @@ function rollDice() {
 
 function updateErrorMsg() {
     msg = controller.error;
-    elem = $('#err');
-    if (msg && msg.length <= 1) {
-        elem.html("ERROR");
-        elem.css('visibility', 'hidden');
-    } else {
-        if (msg == "Dice roll not allowed!") {
-            elem.html("Würfeln ist noch nicht erlaubt!");
+    if (msg) {
+        elem = $('#err');
+        if (msg.length <= 1) {
+            elem.html("ERROR");
+            elem.css('visibility', 'hidden');
+        } else {
+            if (msg == "Dice roll not allowed!") {
+                elem.html("Würfeln ist noch nicht erlaubt!");
+            }
+            else if (msg == "This shut is not allowed") {
+                elem.html("Dieser Spielzug ist nicht erlaubt!");
+            }
+            else if (msg == "Please roll the dice first!") {
+                elem.html("Bitte zuerst würfeln!");
+            }
+            elem.css('visibility', 'visible');
         }
-        else if (msg == "This shut is not allowed") {
-            elem.html("Dieser Spielzug ist nicht erlaubt!");
-        }
-        else if (msg == "Please roll the dice first!") {
-            elem.html("Bitte zuerst würfeln!");
-        }
-
-        elem.css('visibility', 'visible');
     }
 }
 

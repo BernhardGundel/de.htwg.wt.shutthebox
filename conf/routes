@@ -24,7 +24,7 @@ GET     /scoreboard                controllers.ShutTheBoxController.scoreboard
 
 #GET     /json                      controllers.ShutTheBoxController.controllerToJson
 
-PUT     /json                      controllers.ShutTheBoxController.startGame
+#PUT     /json                      controllers.ShutTheBoxController.startGame
 
 GET     /websocket                 controllers.ShutTheBoxController.socket
 

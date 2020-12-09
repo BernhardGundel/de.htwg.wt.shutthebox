@@ -8,7 +8,6 @@ import de.htwg.se.shutthebox.controller.controllerComponent.{CellShut, Controlle
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
-
 import scala.swing.Reactor
 
 
@@ -28,16 +27,9 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
     Ok(views.html.index())
   }
 
-  def startGame: Action[JsValue] = Action(parse.json) {
-    request: Request[JsValue] => {
-      var ai: Boolean = false
-      var bigMatchfield: Boolean = false
-      ai = (request.body \"ai").as[Boolean]
-      bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
+  def startGame(ai: Boolean, bigMatchfield: Boolean): Unit = {
       gameController.startGame(if (bigMatchfield) 1 else 0, ai)
       controllerToJson
-      Ok(controllerJson)
-    }
   }
 
   def ingame: Action[AnyContent] = Action {
@@ -47,8 +39,6 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
 
 
   def doShut(index: Int): Unit = {
-    /*request: Request[JsValue] => {
-      val index = (request.body \"index").as[Int]*/
       println("doShut")
       val result = gameController.doShut(index)
       errorMsg = result
@@ -150,6 +140,10 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
     def receive: Actor.Receive = {
       case msg: String =>
         msg match {
+          case msg if msg.contains("ai") =>
+            val ai: Boolean = (Json.parse(msg) \ "ai").as[Boolean]
+            val bigMatchfield: Boolean = (Json.parse(msg) \ "bigMatchfield").as[Boolean]
+            startGame(ai, bigMatchfield)
           case "rollDice" => rollDice
           case msg if msg.contains("index") =>
             val index: Int = (Json.parse(msg) \ "index").as[Int]
@@ -169,7 +163,6 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
       case event: Undone => sendJsonToClient
       case event: Redone => sendJsonToClient
       case event: ShowScoreBoard => sendJsonToClient
-      // case event: All CellsShut => print("All cells shut! :-)") (???)
     }
 
     def sendJsonToClient = {
