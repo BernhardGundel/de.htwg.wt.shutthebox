@@ -71,13 +71,12 @@ function rollDice() {
     websocket.send("rollDice");
     updateDice();
     updateErrorMsg();
-
 }
 
 function updateErrorMsg() {
     msg = controller.error;
     elem = $('#err');
-    if (msg.length <= 1) {
+    if (msg && msg.length <= 1) {
         elem.html("ERROR");
         elem.css('visibility', 'hidden');
     } else {
@@ -103,50 +102,47 @@ function resetErrorMsg() {
 }
 
 function nextPlayer() {
-    getRequest("/nextPlayer").then(() => {
-        updateJson().then(() => {
-            if (controller.turn <= 1) {
-                updateField();
-                resetErrorMsg();
-            } else {
-                location.href = "/scoreboard";
-            }
-        });
-    });
+    websocket.send("nextPlayer");
+    if (controller.turn < 1) {
+        updateField();
+        resetErrorMsg();
+    } else {
+        location.href = "/scoreboard";
+    }
 }
 
 function updateField() {
-    console.log(controller);
-    for (let i = 0; i < controller.field.length; i++) {
-        if (controller.field[i]) {
-            $('#unshut-' + (i+1)).css('opacity', '0');
-            $('#shut-' + (i+1)).css('opacity', '1');
-        } else {
-            $('#unshut-' + (i+1)).css('opacity', '1');
-            $('#shut-' + (i+1)).css('opacity', '0');
+    if (controller.field) {
+        for (let i = 0; i < controller.field.length; i++) {
+            if (controller.field[i]) {
+                $('#unshut-' + (i+1)).css('opacity', '0');
+                $('#shut-' + (i+1)).css('opacity', '1');
+            } else {
+                $('#unshut-' + (i+1)).css('opacity', '1');
+                $('#shut-' + (i+1)).css('opacity', '0');
+            }
         }
     }
 }
 
 function updateDice() {
-    $('#die1').html(JSON.stringify(controller.dice.die1));
-    $('#die2').html(JSON.stringify(controller.dice.die2));
+    if (controller.dice) {
+        $('#die1').html(JSON.stringify(controller.dice.die1));
+        $('#die2').html(JSON.stringify(controller.dice.die2));
+    }
 }
 
 function undo() {
-    console.log("undo");
-    getRequest("/undo").then(() => {
-        updateField();
-        updateErrorMsg();
-    });
+    websocket.send("undo");
+    updateField();
+    updateErrorMsg();
+
 }
 
 function redo() {
-    console.log("redo");
-    getRequest("/redo").then(() => {
-        updateField();
-        updateErrorMsg();
-    });
+    websocket.send("redo");
+    updateField();
+    updateErrorMsg();
 }
 
 function connectWebSocket() {
@@ -170,6 +166,10 @@ function connectWebSocket() {
             updateField();
             updateDice();
             updateErrorMsg();
+
+            if (controller.turn > 1) {
+                location.href = "/scoreboard";
+            }
         }
     };
 }
@@ -177,5 +177,4 @@ function connectWebSocket() {
 
 $( document ).ready(function() {
     connectWebSocket();
-    updateJson();
 });

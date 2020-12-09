@@ -12,17 +12,17 @@ GET     /ingame                    controllers.ShutTheBoxController.ingame
 
 #POST    /shut                      controllers.ShutTheBoxController.doShut()
 
-GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
+#GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
 
 GET     /scoreboard                controllers.ShutTheBoxController.scoreboard
 
-GET     /rollDice                  controllers.ShutTheBoxController.rollDice
+#GET     /rollDice                  controllers.ShutTheBoxController.rollDice
 
-GET     /undo                      controllers.ShutTheBoxController.undo
+#GET     /undo                      controllers.ShutTheBoxController.undo
 
-GET     /redo                      controllers.ShutTheBoxController.redo
+#GET     /redo                      controllers.ShutTheBoxController.redo
 
-GET     /json                      controllers.ShutTheBoxController.controllerToJson
+#GET     /json                      controllers.ShutTheBoxController.controllerToJson
 
 PUT     /json                      controllers.ShutTheBoxController.startGame
 

@@ -4,7 +4,7 @@ import akka.stream.Materializer
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
-import de.htwg.se.shutthebox.controller.controllerComponent.{CellShut, ControllerInterface, DiceRolled, Redone, Undone}
+import de.htwg.se.shutthebox.controller.controllerComponent.{CellShut, ControllerInterface, DiceRolled, Redone, ShowScoreBoard, Undone}
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
@@ -35,37 +35,36 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
       ai = (request.body \"ai").as[Boolean]
       bigMatchfield = (request.body \"bigMatchfield").as[Boolean]
       gameController.startGame(if (bigMatchfield) 1 else 0, ai)
-      controllerToJson()
+      controllerToJson
       Ok(controllerJson)
     }
   }
 
   def ingame: Action[AnyContent] = Action {
-    controllerToJson()
+    controllerToJson
     Ok(views.html.ingame(gameController))
   }
 
 
-  def doShut(index: Int): Action[AnyContent] = Action(parse.json) {
+  def doShut(index: Int): Unit = {
     /*request: Request[JsValue] => {
       val index = (request.body \"index").as[Int]*/
       println("doShut")
       val result = gameController.doShut(index)
       errorMsg = result
-      controllerToJson()
-      Ok(controllerJson)
+      controllerToJson
   }
 
-  def rollDice: Action[AnyContent] = {
+  def rollDice: Unit = {
     val result: String = gameController.rollDice
     errorMsg = result
-    controllerToJson()
+    controllerToJson
   }
 
-  def nextPlayer: Action[AnyContent] = Action {
+  def nextPlayer: Unit = {
     gameController.setCurrentPlayer()
-    controllerToJson()
-    Ok(controllerJson)
+    println(gameController.currentPlayerIndex)
+    controllerToJson
   }
 
   def scoreboard: Action[AnyContent] = Action {
@@ -73,19 +72,17 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
     Ok(views.html.scoreboard(players(0).score, players(1).score))
   }
 
-  def undo: Action[AnyContent] = Action {
+  def undo: Unit = {
     gameController.undoShut()
-    controllerToJson()
-    Ok(controllerJson)
+    controllerToJson
   }
 
-  def redo: Action[AnyContent] = Action {
+  def redo: Unit = {
     gameController.redoShut()
-    controllerToJson()
-    Ok(controllerJson)
+    controllerToJson
   }
 
-  def controllerToJson: Action[AnyContent] = Action(parse.json) {
+  def controllerToJson: Unit = {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
@@ -131,7 +128,6 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
       }
     """)
     controllerJson = json
-    Ok(json)
   }
 
   def socket = WebSocket.accept[String, String] { request =>
@@ -157,10 +153,12 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
           case "rollDice" => rollDice
           case msg if msg.contains("index") =>
             val index: Int = (Json.parse(msg) \ "index").as[Int]
-            gameController.doShut(index)
+            doShut(index)
+          case "nextPlayer" => nextPlayer
+          case "undo" => undo
+          case "redo" => redo
         }
-        controllerToJson()
-        println(controllerJson)
+        controllerToJson
         out ! (controllerJson.toString())
         println("Sent Json to Client: " + msg)
     }
@@ -170,14 +168,13 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
       case event: CellShut => sendJsonToClient
       case event: Undone => sendJsonToClient
       case event: Redone => sendJsonToClient
-      // case event: ShowScoreBoard => printScoreBoard (???)
+      case event: ShowScoreBoard => sendJsonToClient
       // case event: All CellsShut => print("All cells shut! :-)") (???)
     }
 
-
     def sendJsonToClient = {
       println("Received event from Controller")
-      controllerToJson()
+      controllerToJson
       out ! (controllerJson.toString())
     }
 
