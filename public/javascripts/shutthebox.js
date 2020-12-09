@@ -49,12 +49,6 @@ var websocket = new WebSocket("ws://localhost:9000/websocket");
 function startGame() {
     let checkBoxMatchfield = document.getElementById("cb-matchfield");
     let checkBoxAI = document.getElementById("cb-ai");
-    /*postRequest("PUT", "/json",
-        { "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked }).then(() => {
-            updateJson().then(() => {
-            location.href = "/ingame"
-        });
-    });*/
     websocket.send(JSON.stringify({ "ai": checkBoxAI.checked, "bigMatchfield": checkBoxMatchfield.checked }));
     location.href = "/ingame"
 }
@@ -98,7 +92,6 @@ function resetErrorMsg() {
     elem = $('#err')
     elem.html("ERROR");
     elem.css('visibility', 'hidden');
-
 }
 
 function nextPlayer() {
@@ -136,7 +129,6 @@ function undo() {
     websocket.send("undo");
     updateField();
     updateErrorMsg();
-
 }
 
 function redo() {
