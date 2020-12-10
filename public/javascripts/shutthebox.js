@@ -1,51 +1,6 @@
 var controller = {}
 var websocket = new WebSocket("ws://localhost:9000/websocket");
 
-/*function updateJson() {
-    return $.ajax({
-        method: "GET",
-        url: "/json",
-        dataType: "json",
-
-        success: function (response) {
-            controller = response;
-        }
-    });
-}*/
-
-/*function getRequest(url) {
-    return $.ajax({
-            method: "GET",
-            url: url,
-            dataType: "json",
-
-            success: function (response) {
-                controller = response;
-            },
-            error: function(response) {
-                console.error(response);
-            }
-        });
-}*/
-
-/*function postRequest(method, url, data) {
-     return $.ajax({
-            method: method,
-            url: url,
-            data: JSON.stringify(data),
-            dataType: "json",
-            contentType: "application/json",
-
-            success: function(response) {
-                controller = response;
-                console.log(response);
-            },
-            error: function(response) {
-                console.error(response);
-            }
-        });
-}*/
-
 function startGame() {
     let checkBoxMatchfield = document.getElementById("cb-matchfield");
     let checkBoxAI = document.getElementById("cb-ai");
