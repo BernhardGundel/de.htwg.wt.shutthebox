@@ -2,6 +2,8 @@
 @size = @{ controller.matchfield.field.size }
 
 @main("HTWG Shut The Box") {
+<script src='@routes.Assets.versioned("javascripts/vue.js")'></script>
+<script src='@routes.Assets.versioned("javascripts/sudokuVue.js")'></script>
 <button class="menu-button back-to-menu-button" onclick="location.href='/'"></button>
 <div class="undo-redo-button-container">
     <button type="button" class="btn btn-outline-dark" onclick="undo()">UNDO</button>
