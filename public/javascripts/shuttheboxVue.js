@@ -1,4 +1,32 @@
-let sudokuHighlightButtons =[{text: "None", link: "/highlight/0"}]
+
+
+Vue.component('shutthebox-matchfield', {
+    template:`
+    <div>
+        <button v-for="index in 9" :key="index" id="unshut-index + 1" class="cell-flex cell font-light" onclick="shut(index)">
+            {{ index }}
+        </button>
+        <br>
+        <br>
+        <div class="matchfield-divider"></div>
+        <br>
+        <button v-for="index in 9" :key="index" id="shut-index + 1" class="cell-flex hidden cell-shut font-light" disabled>
+            {{ index }}
+        </button>
+    </div>
+    `
+});
+
+
+
+$(document).ready(() => {
+    new Vue({
+        el: '#shutthebox-game'
+    });
+});
+
+
+/*let sudokuHighlightButtons =[{text: "None", link: "/highlight/0"}]
  for(let index=1; index <=9; index++){
      sudokuHighlightButtons.push({text: index, link: "/highlight/"+index})
  }
@@ -38,4 +66,4 @@ let sudokuHighlightButtons =[{text: "None", link: "/highlight/0"}]
          }
      },
 
- })
+ })*/
