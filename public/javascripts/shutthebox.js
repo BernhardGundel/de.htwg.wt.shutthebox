@@ -8,7 +8,6 @@ function startGame() {
     location.href = "/ingame"
 }
 
-
 function shut(i) {
     websocket.send(JSON.stringify({"index": i}));
     updateField();

@@ -1,69 +1,49 @@
-
+var controller = {}
+var websocket = new WebSocket("ws://localhost:9000/websocket");
 
 Vue.component('shutthebox-matchfield', {
     template:`
     <div>
-        <button v-for="index in 9" :key="index" id="unshut-index + 1" class="cell-flex cell font-light" onclick="shut(index)">
+        <button v-for="index in gridsize" :key="index" id="unshut-index + 1" class="cell-flex cell font-light" @click="shut(index)">
             {{ index }}
         </button>
         <br>
         <br>
         <div class="matchfield-divider"></div>
         <br>
-        <button v-for="index in 9" :key="index" id="shut-index + 1" class="cell-flex hidden cell-shut font-light" disabled>
+        <button v-for="index in gridsize" :key="index" id="shut-index + 1" class="cell-flex hidden cell-shut font-light" disabled>
             {{ index }}
         </button>
     </div>
-    `
+    `,
+    props: {
+    gridsize: Number
+    },
+    methods: {
+        shut(i) {
+          websocket.send(JSON.stringify({"index": i}));
+          updateField();
+          updateErrorMsg();
+        },
+        updateField() {
+            if (controller.field) {
+                for (let i = 0; i < gridsize; i++) {
+                    if (controller.field[i]) {
+                        $('#unshut-' + (i+1)).css('opacity', '0');
+                        $('#shut-' + (i+1)).css('opacity', '1');
+                    } else {
+                        $('#unshut-' + (i+1)).css('opacity', '1');
+                        $('#shut-' + (i+1)).css('opacity', '0');
+                    }
+                }
+            }
+        }
+    }
 });
 
-
-
 $(document).ready(() => {
+    connectWebSocket();
     new Vue({
         el: '#shutthebox-game'
     });
 });
-
-
-/*let sudokuHighlightButtons =[{text: "None", link: "/highlight/0"}]
- for(let index=1; index <=9; index++){
-     sudokuHighlightButtons.push({text: index, link: "/highlight/"+index})
- }
-
- $(document).ready(function () {
-
-     var sudokuVueMenu = new Vue({
-         el: '#sudoku-vue-menu',
-         data: {
-             menuItems: sudokuHighlightButtons
-         }
-     })
-
-
-     var sudokuGame = new Vue({
-         el:'#sudoku-game'
-     })
-
- })
-
-
-
- Vue.component('sudoku-highlight-button-bar', {
-     template:`
-         <div class="buttonbarcontainer">
-             <label>
-                 Highlight
-             </label>
-             <div  class=" btn-group" >
-                 <a v-for="item in menuItems" v-bind:href="item.link" class="btn btn-primary"> {{item.text}} </a>
-             </div>
-         </div>
-     `,
-     data: function () {
-         return {
-             menuItems: sudokuHighlightButtons
-         }
-     },
-
- })*/
