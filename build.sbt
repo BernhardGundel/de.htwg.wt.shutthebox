@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
   "com.mohiva" %% "play-silhouette-persistence" % "6.1.1",
   "com.mohiva" %% "play-silhouette-crypto-jca" % "6.1.1",
   "com.mohiva" %% "play-silhouette-totp" % "6.1.1",
-  "org.webjars" %% "webjars-play" % "2.8.0",
+  "org.webjars" %% "webjars-play" % "2.7.0",
   "org.webjars" % "bootstrap" % "4.4.1" exclude("org.webjars", "jquery"),
   "org.webjars" % "jquery" % "3.2.1",
   "net.codingwell" %% "scala-guice" % "4.2.6",
