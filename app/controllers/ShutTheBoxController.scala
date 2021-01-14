@@ -1,78 +1,61 @@
 package controllers
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.actor.{ Actor, ActorRef, ActorSystem, Props }
 import akka.stream.Materializer
+import com.mohiva.play.silhouette.api.Silhouette
+import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
-import de.htwg.se.shutthebox.controller.controllerComponent.{CellShut, ControllerInterface, DiceRolled, Redone, ShowScoreBoard, Undone}
+import de.htwg.se.shutthebox.controller.controllerComponent.{ CellShut, ControllerInterface, DiceRolled, Redone, ShowScoreBoard, Undone }
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
+import utils.auth.DefaultEnv
+
 import scala.swing.Reactor
 
-
 @Singleton
-class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
-
+class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silhouette[DefaultEnv])(implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
   val gameController: ControllerInterface = ShutTheBox.controller
   var errorMsg: String = ""
 
   var controllerJson: JsValue = Json.parse("{}")
 
-  def shutthebox: Action[AnyContent] = Action {
-    Ok(views.html.mainmenu())
-  }
-
-  def help: Action[AnyContent] = Action {
-    Ok(views.html.index())
-  }
-
   def startGame(ai: Boolean, bigMatchfield: Boolean): Unit = {
-      gameController.startGame(if (bigMatchfield) 1 else 0, ai)
-      controllerToJson
-  }
-
-  def ingame: Action[AnyContent] = Action {
+    gameController.startGame(if (bigMatchfield) 1 else 0, ai)
     controllerToJson
-    Ok(views.html.ingame(gameController))
   }
-
 
   def doShut(index: Int): Unit = {
-      println("doShut")
-      val result = gameController.doShut(index)
-      errorMsg = result
-      controllerToJson
+    println("doShut")
+    val result = gameController.doShut(index)
+    errorMsg = result
+    controllerToJson
   }
 
-  def rollDice: Unit = {
+  def rollDice(): Unit = {
     val result: String = gameController.rollDice
     errorMsg = result
     controllerToJson
   }
 
-  def nextPlayer: Unit = {
+  def nextPlayer(): Unit = {
     gameController.setCurrentPlayer()
     println(gameController.currentPlayerIndex)
     controllerToJson
   }
 
-  def scoreboard: Action[AnyContent] = Action {
-    val players = gameController.getPlayers
-    Ok(views.html.scoreboard(players(0).score, players(1).score))
-  }
-
-  def undo: Unit = {
+  def undo(): Unit = {
     gameController.undoShut()
     controllerToJson
   }
 
-  def redo: Unit = {
+  def redo(): Unit = {
     gameController.redoShut()
     controllerToJson
   }
 
-  def controllerToJson: Unit = {
+  def controllerToJson(): Unit = {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
@@ -87,8 +70,8 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
           field = field :+ gameController.matchfield.field(i).isShut
         }
     }
-    val  die1 = gameController.dice(0).value
-    val  die2  = gameController.dice(1).value
+    val die1 = gameController.dice(0).value
+    val die2 = gameController.dice(1).value
     var scorePlayer1 = 0
     var scorePlayer2 = 0
     var turn = 0
@@ -120,13 +103,12 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
     controllerJson = json
   }
 
-  def socket = WebSocket.accept[String, String] { request =>
+  def socket() = WebSocket.accept[String, String] { request =>
     ActorFlow.actorRef { out =>
       println("Connect received")
       ShutTheBoxWebSocketActorFactory.create(out)
     }
   }
-
 
   object ShutTheBoxWebSocketActorFactory {
     def create(out: ActorRef) = {
@@ -165,7 +147,7 @@ class ShutTheBoxController @Inject()(cc: ControllerComponents) (implicit system:
       case event: ShowScoreBoard => sendJsonToClient
     }
 
-    def sendJsonToClient = {
+    def sendJsonToClient() = {
       println("Received event from Controller")
       controllerToJson
       out ! (controllerJson.toString())
