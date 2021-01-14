@@ -8,6 +8,7 @@ version := "1.0"
 
 scalaVersion := "2.12.7"
 
+
 resolvers += Resolver.jcenterRepo
 
 resolvers += "Sonatype snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -35,6 +36,8 @@ libraryDependencies ++= Seq(
   filters
 )
 
+lazy val root = (project in file(".")).enablePlugins(PlayScala)
+
 libraryDependencies += guice
 
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4" % "test"
@@ -43,7 +46,7 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2
 
 libraryDependencies += "com.h2database" % "h2" % "1.4.196"
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+
 
 routesImport += "utils.route.Binders._"
 
