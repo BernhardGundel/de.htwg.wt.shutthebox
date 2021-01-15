@@ -55,7 +55,7 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
     controllerToJson
   }
 
-  def controllerToJson(): Unit = {
+  def controllerToJson() = {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
@@ -101,6 +101,7 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
       }
     """)
     controllerJson = json
+    //Ok(controllerJson)
   }
 
   def socket() = WebSocket.accept[String, String] { request =>
