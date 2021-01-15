@@ -1,7 +1,7 @@
 package controllers
 import akka.actor.{ Actor, ActorRef, ActorSystem, Props }
 import akka.stream.Materializer
-import com.mohiva.play.silhouette.api.Silhouette
+import com.mohiva.play.silhouette.api.{ HandlerResult, Silhouette }
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import javax.inject._
 import play.api.mvc._
@@ -12,10 +12,11 @@ import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
 import utils.auth.DefaultEnv
 
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.swing.Reactor
 
 @Singleton
-class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silhouette[DefaultEnv])(implicit system: ActorSystem, mat: Materializer) extends AbstractController(cc) {
+class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silhouette[DefaultEnv])(implicit system: ActorSystem, mat: Materializer, ec: ExecutionContext) extends AbstractController(cc) {
   val gameController: ControllerInterface = ShutTheBox.controller
   var errorMsg: String = ""
 
@@ -101,13 +102,15 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
       }
     """)
     controllerJson = json
-    //Ok(controllerJson)
   }
 
-  def socket() = WebSocket.accept[String, String] { request =>
-    ActorFlow.actorRef { out =>
-      println("Connect received")
-      ShutTheBoxWebSocketActorFactory.create(out)
+  def socket = WebSocket.acceptOrResult[String, String] { request =>
+    implicit val req = Request(request, AnyContentAsEmpty)
+    silhouette.SecuredRequestHandler { securedRequest =>
+      Future.successful(HandlerResult(Ok, Some(securedRequest.identity)))
+    }.map {
+      case HandlerResult(r, Some(user)) => Right(ActorFlow.actorRef { out => ShutTheBoxWebSocketActorFactory.create(out) })
+      case HandlerResult(r, None) => Left(r)
     }
   }
 
