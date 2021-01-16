@@ -4,6 +4,7 @@ import scalariform.formatter.preferences._
 
 name := "shuttheboxserver"
 herokuAppName in Compile := "shuttheboxserver"
+herokuJdkVersion in Compile := "1.8"
 version := "1.0"
 
 //scalaVersion := "2.12.8"
