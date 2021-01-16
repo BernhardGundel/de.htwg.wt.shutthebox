@@ -3,7 +3,7 @@ import com.typesafe.sbt.SbtScalariform._
 import scalariform.formatter.preferences._
 
 name := """Shut The Box"""
-
+herokuAppName in Compile := "shuttheboxserver"
 version := "1.0"
 
 //scalaVersion := "2.12.8"
