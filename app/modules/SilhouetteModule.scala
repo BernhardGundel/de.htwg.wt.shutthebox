@@ -51,10 +51,13 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
    * Set to null, set Some(None), will use 'No Restriction'
    * Set to a string value try to match, Some(Option(string))
    */
-  implicit val sameSiteReader: ValueReader[Option[Option[Cookie.SameSite]]] =
+  /*implicit val sameSiteReader: ValueReader[Option[Option[Cookie.SameSite]]] =
     (config: Config, path: String) => {
       Some(Cookie.SameSite.parse("None"))
-    }
+    }*/
+
+  implicit val sameSiteReader: ValueReader[Option[Cookie.SameSite]] =
+    ValueReader.relative(cfg => Cookie.SameSite.parse("None"))
 
   /**
    * Configures the module.
