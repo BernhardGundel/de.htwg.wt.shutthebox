@@ -36,8 +36,8 @@ GET         /account/activate/:token         controllers.ActivateAccountControll
 
 GET     /checkSignedIn                       controllers.ShutTheBoxController.checkSignedIn
 GET     /websocket                           controllers.ShutTheBoxController.socket
-GET     /game                                controllers.ShutTheBoxFrontendController.serveFrontend
-GET     /game/*file                          controllers.Assets.at(path="/public/frontend", file)
+GET     /frontend                            controllers.ShutTheBoxFrontendController.serveFrontend
+GET     /frontend/*file                      controllers.Assets.at(path="/public/frontend", file)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)
