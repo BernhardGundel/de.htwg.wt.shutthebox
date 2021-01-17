@@ -57,7 +57,7 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     }*/
 
   implicit val sameSiteReader: ValueReader[Option[Cookie.SameSite]] =
-    ValueReader.relative(cfg => Cookie.SameSite.parse("None"))
+    ValueReader.relative(cfg => Cookie.SameSite.parse(cfg.as[String]))
 
   /**
    * Configures the module.
