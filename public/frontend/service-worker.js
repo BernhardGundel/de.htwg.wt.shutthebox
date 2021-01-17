@@ -14,16 +14,14 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.db4e28155ddcdac820b2bbb9a5cb33d6.js"
+  "/frontend/precache-manifest.0dd4e0256d76135a1a933bf3e8c7b406.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "shutthebox"});
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
+workbox.core.skipWaiting();
+
+workbox.core.clientsClaim();
 
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
@@ -32,3 +30,5 @@ self.addEventListener('message', (event) => {
  */
 self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
+
+workbox.routing.registerNavigationRoute(workbox.precaching.getCacheKeyForURL("index.html"));

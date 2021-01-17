@@ -2,20 +2,20 @@ package controllers
 import java.io.File
 import java.nio.file.NoSuchFileException
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.actor.{ Actor, ActorRef, ActorSystem, Props }
 import akka.stream.Materializer
-import com.mohiva.play.silhouette.api.{HandlerResult, Silhouette}
+import com.mohiva.play.silhouette.api.{ HandlerResult, Silhouette }
 import com.mohiva.play.silhouette.api.actions.SecuredRequest
 import javax.inject._
 import play.api.mvc._
 import de.htwg.se.shutthebox.ShutTheBox
-import de.htwg.se.shutthebox.controller.controllerComponent.{CellShut, ControllerInterface, DiceRolled, Redone, ShowScoreBoard, Undone}
+import de.htwg.se.shutthebox.controller.controllerComponent.{ CellShut, ControllerInterface, DiceRolled, Redone, ShowScoreBoard, Undone }
 import de.htwg.se.shutthebox.model.playerComponent.aiInterface
 import play.api.libs.json._
 import play.api.libs.streams.ActorFlow
 import utils.auth.DefaultEnv
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 import scala.swing.Reactor
 
 @Singleton

@@ -56,7 +56,6 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
       Some(Cookie.SameSite.parse("None"))
     }
 
-
   /**
    * Configures the module.
    */
