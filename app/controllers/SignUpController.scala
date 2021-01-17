@@ -44,14 +44,14 @@ class SignUpController @Inject() (
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userService.retrieve(loginInfo).flatMap {
           case Some(user) =>
-            val url = Calls.signin.absoluteURL()
+            /*val url = Calls.signin.absoluteURL()
             mailerClient.send(Email(
               subject = Messages("email.already.signed.up.subject"),
               from = Messages("email.from"),
               to = Seq(data.email),
               bodyText = Some(views.txt.emails.alreadySignedUp(user, url).body),
               bodyHtml = Some(views.html.emails.alreadySignedUp(user, url).body)
-            ))
+            ))*/
 
             Future.successful(result)
           case None =>
