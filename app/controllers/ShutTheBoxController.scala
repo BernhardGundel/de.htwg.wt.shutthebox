@@ -56,6 +56,10 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
     controllerToJson
   }
 
+  def checkSignedIn = silhouette.SecuredAction {
+    Ok("You are successfully signed in.")
+  }
+
   def controllerToJson() = {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {

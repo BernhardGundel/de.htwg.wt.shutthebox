@@ -34,29 +34,8 @@ GET         /account/activate/:token         controllers.ActivateAccountControll
 
 # Controller for ShutTheBox
 
-#GET     /                          controllers.ShutTheBoxController.shutthebox
-
-#GET     /help                      controllers.ShutTheBoxController.help
-
-#GET     /ingame                    controllers.ShutTheBoxController.ingame
-
-#POST    /shut                      controllers.ShutTheBoxController.doShut()
-
-#GET     /nextPlayer                controllers.ShutTheBoxController.nextPlayer
-
-#GET     /scoreboard                controllers.ShutTheBoxController.scoreboard
-
-#GET     /rollDice                  controllers.ShutTheBoxController.rollDice
-
-#GET     /undo                      controllers.ShutTheBoxController.undo
-
-#GET     /redo                      controllers.ShutTheBoxController.redo
-
-#GET     /json                      controllers.ShutTheBoxController.controllerToJson
-
-#PUT     /json                      controllers.ShutTheBoxController.startGame
-
-GET     /websocket                 controllers.ShutTheBoxController.socket
+GET     /checkSignedIn                       controllers.ShutTheBoxController.checkSignedIn
+GET     /websocket                           controllers.ShutTheBoxController.socket
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                    controllers.Assets.versioned(file)
