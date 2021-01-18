@@ -111,13 +111,19 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
     controllerJson = json
   }
 
-  def socket = WebSocket.acceptOrResult[String, String] { request =>
+  /*def socket = WebSocket.acceptOrResult[String, String] { request =>
     implicit val req = Request(request, AnyContentAsEmpty)
     silhouette.SecuredRequestHandler { securedRequest =>
       Future.successful(HandlerResult(Ok, Some(securedRequest.identity)))
     }.map {
       case HandlerResult(r, Some(user)) => Right(ActorFlow.actorRef { out => ShutTheBoxWebSocketActorFactory.create(out) })
       case HandlerResult(r, None) => Left(r)
+    }
+  }*/
+
+  def ws = WebSocket.accept[JsValue, JsValue] { requestHeader =>
+    ActorFlow.actorRef { out =>
+      ShutTheBoxWebSocketActorFactory.create(out)
     }
   }
 
