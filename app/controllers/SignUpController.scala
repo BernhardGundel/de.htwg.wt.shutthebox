@@ -44,8 +44,8 @@ class SignUpController @Inject() (
         val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
         userService.retrieve(loginInfo).flatMap {
           case Some(user) =>
-            /*val url = Calls.signin.absoluteURL()
-            mailerClient.send(Email(
+            val url = Calls.signin.absoluteURL()
+            /*mailerClient.send(Email(
               subject = Messages("email.already.signed.up.subject"),
               from = Messages("email.from"),
               to = Seq(data.email),
