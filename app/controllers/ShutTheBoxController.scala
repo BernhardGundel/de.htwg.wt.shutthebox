@@ -121,7 +121,7 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
     }
   }*/
 
-  def socket = WebSocket.accept[JsValue, JsValue] { requestHeader =>
+  def socket = WebSocket.accept[String, String] { requestHeader =>
     ActorFlow.actorRef { out =>
       ShutTheBoxWebSocketActorFactory.create(out)
     }
