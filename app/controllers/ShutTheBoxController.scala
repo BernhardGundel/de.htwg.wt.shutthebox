@@ -25,10 +25,9 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
 
   var controllerJson: JsValue = Json.parse("{}")
 
-  def startGame(ai: Boolean, bigMatchfield: Boolean): Unit = silhouette.SecuredAction {
+  def startGame(ai: Boolean, bigMatchfield: Boolean): Unit = {
     gameController.startGame(if (bigMatchfield) 1 else 0, ai)
     controllerToJson
-    Ok
   }
 
   def doShut(index: Int): Unit = {
