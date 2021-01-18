@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/frontend/precache-manifest.af557b53e0f43741955b9f40098d1a6c.js"
+  "/frontend/precache-manifest.a70a6fd59d9dd4989c35f199ca81fb7d.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "shutthebox"});
