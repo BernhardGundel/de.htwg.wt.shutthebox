@@ -22,15 +22,15 @@ class ApplicationController @Inject() (
    *
    * @return The result to display.
    */
-  def index = SecuredAction.async { implicit request: SecuredRequest[EnvType, AnyContent] =>
+  /*def index = SecuredAction.async { implicit request: SecuredRequest[EnvType, AnyContent] =>
     authInfoRepository.find[GoogleTotpInfo](request.identity.loginInfo).map { totpInfoOpt =>
       Ok(home(request.identity, totpInfoOpt))
     }
-  }
-
-  /*def index(): Action[AnyContent] = Action {
-    Redirect(routes.ShutTheBoxFrontendController.serveFrontend())
   }*/
+
+  def index(): Action[AnyContent] = Action {
+    Redirect(routes.ShutTheBoxFrontendController.serveFrontend())
+  }
 
   /**
    * Handles the Sign Out action.
