@@ -25,9 +25,10 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
 
   var controllerJson: JsValue = Json.parse("{}")
 
-  def startGame(ai: Boolean, bigMatchfield: Boolean): Unit = {
+  def startGame(ai: Boolean, bigMatchfield: Boolean): Unit = silhouette.SecuredAction {
     gameController.startGame(if (bigMatchfield) 1 else 0, ai)
     controllerToJson
+    Ok
   }
 
   def doShut(index: Int): Unit = {
@@ -63,7 +64,7 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
     Ok("You are successfully signed in.")
   }
 
-  def controllerToJson() = {
+  def controllerToJson() = silhouette.SecuredAction {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
@@ -109,6 +110,7 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
       }
     """)
     controllerJson = json
+    Ok
   }
 
   /*def socket = WebSocket.acceptOrResult[String, String] { request =>
