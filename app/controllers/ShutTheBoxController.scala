@@ -64,7 +64,7 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
     Ok("You are successfully signed in.")
   }
 
-  def controllerToJson() = silhouette.SecuredAction {
+  def controllerToJson() = {
     val ai: Boolean = if (gameController.getPlayers(1).isInstanceOf[aiInterface]) true else false
     val bigMatchfield = gameController.matchfield match {
       case null => None
@@ -110,7 +110,6 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
       }
     """)
     controllerJson = json
-    Ok(json)
   }
 
   /*def socket = WebSocket.acceptOrResult[String, String] { request =>
