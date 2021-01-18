@@ -109,7 +109,8 @@ class ShutTheBoxController @Inject() (cc: ControllerComponents, silhouette: Silh
         "error" : """ + Json.toJson(errorMsg) + """
       }
     """)
-    Ok(controllerJson = json)
+    controllerJson = json
+    Ok(json)
   }
 
   /*def socket = WebSocket.acceptOrResult[String, String] { request =>
