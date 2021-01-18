@@ -73,8 +73,8 @@ class SignUpController @Inject() (
               authInfo <- authInfoRepository.add(loginInfo, authInfo)
               authToken <- authTokenService.create(user.userID)
             } yield {
-              /*val url = routes.ActivateAccountController.activate(authToken.id).absoluteURL()
-              mailerClient.send(Email(
+              val url = routes.ActivateAccountController.activate(authToken.id).absoluteURL()
+              /*mailerClient.send(Email(
                 subject = Messages("email.sign.up.subject"),
                 from = Messages("email.from"),
                 to = Seq(data.email),
