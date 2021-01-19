@@ -45,7 +45,7 @@ class SocialAuthController @Inject() (
       case e: ProviderException =>
         logger.error("Unexpected provider error", e)
         //Redirect(Calls.signin).flashing("error" -> Messages("could.not.authenticate"))
-        Redirect("/frontend")
+        Redirect(routes.ShutTheBoxFrontendController.serveFrontend())
     }
   }
 }
