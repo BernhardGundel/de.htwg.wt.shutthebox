@@ -55,7 +55,8 @@ class SignInController @Inject() (
           }
         }.recover {
           case _: ProviderException =>
-            Redirect(Calls.signin).flashing("error" -> Messages("invalid.credentials"))
+            //Redirect(Calls.signin).flashing("error" -> Messages("invalid.credentials"))
+            Status(401)("Not authenticated");
         }
       }
     )
