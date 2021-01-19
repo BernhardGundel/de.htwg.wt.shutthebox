@@ -18,35 +18,20 @@ POST        /signUp                          controllers.SignUpController.submit
 GET         /signIn                          controllers.SignInController.view
 + nocsrf
 POST        /signIn                          controllers.SignInController.submit
-+ nocsrf
 GET         /totp                            controllers.TotpController.view(userId: java.util.UUID, sharedKey: String, rememberMe: Boolean)
-+ nocsrf
 GET         /enableTotp                      controllers.TotpController.enableTotp
-+ nocsrf
 GET         /disableTotp                     controllers.TotpController.disableTotp
-+ nocsrf
 POST        /totpSubmit                      controllers.TotpController.submit
-+ nocsrf
 POST        /enableTotpSubmit                controllers.TotpController.enableTotpSubmit
-+ nocsrf
 GET         /totpRecovery                    controllers.TotpRecoveryController.view(userID: java.util.UUID, sharedKey: String, rememberMe: Boolean)
-+ nocsrf
 POST        /totpRecoverySubmit              controllers.TotpRecoveryController.submit
-+ nocsrf
 GET         /password/forgot                 controllers.ForgotPasswordController.view
-+ nocsrf
 POST        /password/forgot                 controllers.ForgotPasswordController.submit
-+ nocsrf
 GET         /password/reset/:token           controllers.ResetPasswordController.view(token: java.util.UUID)
-+ nocsrf
 POST        /password/reset/:token           controllers.ResetPasswordController.submit(token: java.util.UUID)
-+ nocsrf
 GET         /password/change                 controllers.ChangePasswordController.view
-+ nocsrf
 POST        /password/change                 controllers.ChangePasswordController.submit
-+ nocsrf
 GET         /account/email/:email            controllers.ActivateAccountController.send(email: String)
-+ nocsrf
 GET         /account/activate/:token         controllers.ActivateAccountController.activate(token: java.util.UUID)
 
 # Controller for ShutTheBox
