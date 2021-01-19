@@ -39,8 +39,7 @@ GET         /account/activate/:token         controllers.ActivateAccountControll
 GET     /checkSignedIn                       controllers.ShutTheBoxController.checkSignedIn
 + nocsrf
 GET     /websocket                           controllers.ShutTheBoxController.socket
-+ nocsrf
-GET     /frontend                            controllers.ShutTheBoxFrontendController.serveFrontend
+
 + nocsrf
 GET     /frontend/*file                      controllers.Assets.at(path="/public/frontend", file)
 
