@@ -4,7 +4,7 @@
 
 # Home page
 + nocsrf
-GET          /                               controllers.ShutTheBoxFrontendController.frontend
+GET          /                               controllers.ShutTheBoxFrontendController.serveFrontend
 #GET         /                                controllers.ApplicationController.index
 + nocsrf
 GET         /signOut                         controllers.ApplicationController.signOut
